@@ -14,6 +14,7 @@ extension KeyboardShortcuts.Name {
 @MainActor
 enum MacApplication {
     static var willTerminateNotification: Notification.Name { NSApplication.willTerminateNotification }
+    static var icon: NSImage { NSApplication.shared.applicationIconImage }
 
     static func validateShortcut(_ shortcut: KeyboardShortcuts.Shortcut) -> KeyboardShortcuts.ValidationResult {
         if shortcut == .init(.space, modifiers: .command)

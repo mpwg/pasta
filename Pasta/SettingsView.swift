@@ -29,9 +29,10 @@ struct SettingsView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 14) {
-                Image(systemName: "clipboard")
-                    .font(.largeTitle)
-                    .foregroundStyle(.orange)
+                Image(nsImage: MacApplication.icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 48, height: 48)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Pasta").font(.largeTitle.bold())

@@ -2,6 +2,8 @@
 
 Eine kleine native Menüleisten-App für macOS 27+. Ein frei wählbarer globaler Shortcut (standardmäßig **⌘⇧V**) öffnet die integrierte Zwischenablagehistorie von macOS.
 
+Das App-Icon mit Farfalle und Zwischenablage liegt als editierbare Icon-Composer-Datei unter `Pasta/AppIcon.icon` vor. [Vorschau, Bearbeitung und Prüfung](docs/app-icon.md).
+
 Die Ausgangs- und Rückfallsprache ist **Englisch**, die erste Übersetzung **Deutsch**. Pasta folgt der in macOS gewählten App-Sprache. Menüs, Einstellungen, Statusanzeigen, Shortcut-Validierung und Fehlermeldungen sind lokalisiert. Die App verwendet `Pasta/Localizable.xcstrings`; PastaCore hat einen eigenen Katalog unter `Packages/PastaCore/Sources/PastaCore/Resources/Localizable.xcstrings` und lädt seine Meldungen aus dem Paket-Bundle.
 
 Pasta hält synthetisch ⌘ gedrückt, drückt und löst die Leertaste, wartet auf den bestätigten Spotlight-Fokus und drückt anschließend 4. Zum Schluss wird ⌘ losgelassen, auch bei einem Fehler. Bei bereits fokussiertem Spotlight entfällt die Leertaste. Der Start erfolgt beim Loslassen des eigenen Shortcuts; gehaltene physische Sondertasten werden bis zu einer Sekunde abgewartet. Weitere Aufrufe während der Sequenz werden ignoriert.
