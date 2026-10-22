@@ -14,7 +14,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 5. Download through a browser, install in `/Applications`, verify Gatekeeper approval and Accessibility, and test launch at login after signing out and in. Update acceptance evidence and release notes. Unverified items must remain explicit.
 6. Publish the draft manually when you choose to distribute it. Running the workflow never publishes it automatically.
 
-Private vulnerability reporting must be enabled in the repository's Security settings. Repository secret scanning and push protection should remain enabled. Workflows use SHA-pinned actions, read-only default permissions and a separate release job with `contents: write`. Pull request code never receives release permissions.
+Private vulnerability reporting must be enabled in the repository's Security settings. Repository secret scanning and push protection should remain enabled. Workflows use maintained major-version action tags, read-only default permissions and a separate release job with `contents: write`. Pull request code never receives release permissions.
 
 ## Local packaging
 
