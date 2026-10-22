@@ -18,7 +18,7 @@ enum MacApplication {
     static func validateShortcut(_ shortcut: KeyboardShortcuts.Shortcut) -> KeyboardShortcuts.ValidationResult {
         if shortcut == .init(.space, modifiers: .command)
             || shortcut == .init(.four, modifiers: .command) {
-            return .disallow(reason: "Diese Tastenkombination wird zum Öffnen der macOS-Zwischenablage benötigt.")
+            return .disallow(reason: String(localized: "This keyboard shortcut is required to open the macOS clipboard history."))
         }
         return .allow
     }

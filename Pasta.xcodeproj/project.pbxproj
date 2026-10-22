@@ -189,7 +189,7 @@
 				};
 			};
 			buildConfigurationList = 40393547308A24B6002B22BC /* Build configuration list for PBXProject "Pasta" */;
-			developmentRegion = de;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

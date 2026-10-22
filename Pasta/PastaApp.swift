@@ -18,7 +18,7 @@ struct PastaApp: App {
         }
         .menuBarExtraStyle(.menu)
 
-        Window("Pasta – Einstellungen", id: "settings") {
+        Window("Pasta – Settings", id: "settings") {
             SettingsView(model: model)
                 .onAppear { model.markSettingsShown() }
         }

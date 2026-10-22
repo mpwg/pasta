@@ -9,9 +9,14 @@ let concurrency: [SwiftSetting] = [
 
 let package = Package(
     name: "PastaCore",
+    defaultLocalization: "en",
     platforms: [.macOS("27.0")],
     products: [.library(name: "PastaCore", targets: ["PastaCore"])],
     targets: [
-        .target(name: "PastaCore", swiftSettings: concurrency)
+        .target(
+            name: "PastaCore",
+            resources: [.process("Resources")],
+            swiftSettings: concurrency
+        )
     ]
 )

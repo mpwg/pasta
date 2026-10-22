@@ -1,77 +1,422 @@
 {
-  "sourceLanguage" : "de",
+  "sourceLanguage" : "en",
   "strings" : {
-    "Aktiviere Pasta in den Systemeinstellungen. Falls macOS danach einen Neustart der App verlangt, beende und öffne Pasta erneut." : {
-
+    "Accessibility Access Allowed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bedienungshilfen erlaubt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accessibility Access Allowed"
+          }
+        }
+      }
     },
-    "Anmeldeobjekte öffnen …" : {
-
+    "Allow Accessibility Access" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bedienungshilfen erlauben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow Accessibility Access"
+          }
+        }
+      }
     },
-    "Bedienungshilfen erlauben" : {
-
+    "Click the field and press your shortcut." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klicke in das Feld und drücke deinen Shortcut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Click the field and press your shortcut."
+          }
+        }
+      }
     },
-    "Bedienungshilfen erlaubt" : {
-
+    "Clipboard History Shortcut" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcut für die Zwischenablagehistorie"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clipboard History Shortcut"
+          }
+        }
+      }
     },
-    "Beim Anmelden starten" : {
-
+    "Could not change the launch at login setting: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Start beim Anmelden konnte nicht geändert werden: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not change the launch at login setting: %@"
+          }
+        }
+      },
+      "comment" : "Launch at login error. The placeholder contains the localized macOS error message."
     },
-    "Berechtigung" : {
-
+    "Enable Pasta in System Settings. If macOS then asks you to restart the app, quit and reopen Pasta." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Pasta in den Systemeinstellungen. Falls macOS danach einen Neustart der App verlangt, beende und öffne Pasta erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Pasta in System Settings. If macOS then asks you to restart the app, quit and reopen Pasta."
+          }
+        }
+      }
     },
-    "Berechtigung erteilen …" : {
-
+    "Grant Permission …" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berechtigung erteilen …"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grant Permission …"
+          }
+        }
+      }
     },
-    "Berechtigung fehlt" : {
-
+    "Launch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launch"
+          }
+        }
+      }
     },
-    "Bereit" : {
-
+    "Launch at Login" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beim Anmelden starten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launch at Login"
+          }
+        }
+      }
     },
-    "Bitte bestätige Pasta noch in den Anmeldeobjekten von macOS." : {
-
+    "Open Clipboard" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwischenablage öffnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Clipboard"
+          }
+        }
+      }
     },
-    "Deine Zwischenablage. Ein Shortcut." : {
-
+    "Open Clipboard History" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwischenablagehistorie öffnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Clipboard History"
+          }
+        }
+      }
     },
-    "Einstellungen …" : {
-
-    },
-    "Klicke in das Feld und drücke deinen Shortcut." : {
-
+    "Open Login Items …" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anmeldeobjekte öffnen …"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Login Items …"
+          }
+        }
+      }
     },
     "Pasta" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta"
+          }
+        }
+      }
     },
-    "Pasta – Einstellungen" : {
-
+    "Pasta needs this permission to press ⌘Space and then ⌘4 for you." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta benötigt diese Berechtigung, um ⌘Leertaste und anschließend ⌘4 für dich zu drücken."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta needs this permission to press ⌘Space and then ⌘4 for you."
+          }
+        }
+      }
     },
-    "Pasta beenden" : {
-
+    "Pasta opens the macOS clipboard history. Your copied content stays with macOS." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta öffnet die Zwischenablagehistorie von macOS. Deine kopierten Inhalte bleiben bei macOS."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta opens the macOS clipboard history. Your copied content stays with macOS."
+          }
+        }
+      }
     },
-    "Pasta benötigt diese Berechtigung, um ⌘Leertaste und anschließend ⌘4 für dich zu drücken." : {
-
+    "Pasta – Settings" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta – Einstellungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta – Settings"
+          }
+        }
+      }
     },
-    "Pasta öffnet die Zwischenablagehistorie von macOS. Deine kopierten Inhalte bleiben bei macOS." : {
-
+    "Permission" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berechtigung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permission"
+          }
+        }
+      }
+    },
+    "Permission Required" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berechtigung fehlt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permission Required"
+          }
+        }
+      }
+    },
+    "Please approve Pasta in macOS Login Items." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte bestätige Pasta noch in den Anmeldeobjekten von macOS."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please approve Pasta in macOS Login Items."
+          }
+        }
+      }
+    },
+    "Quit Pasta" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta beenden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quit Pasta"
+          }
+        }
+      }
+    },
+    "Ready" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bereit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready"
+          }
+        }
+      }
+    },
+    "Reset" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurücksetzen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
+    },
+    "Settings …" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen …"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings …"
+          }
+        }
+      }
     },
     "Shortcut" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcut"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shortcut"
+          }
+        }
+      }
     },
-    "Shortcut für die Zwischenablagehistorie" : {
-
+    "This keyboard shortcut is required to open the macOS clipboard history." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Tastenkombination wird zum Öffnen der macOS-Zwischenablage benötigt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This keyboard shortcut is required to open the macOS clipboard history."
+          }
+        }
+      }
     },
-    "Start" : {
-
-    },
-    "Zurücksetzen" : {
-
-    },
-    "Zwischenablage öffnen" : {
-
-    },
-    "Zwischenablagehistorie öffnen" : {
-
+    "Your clipboard. One shortcut." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Zwischenablage. Ein Shortcut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your clipboard. One shortcut."
+          }
+        }
+      }
     }
   },
   "version" : "1.3"

@@ -1,0 +1,70 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Pasta needs Accessibility permission. Allow Pasta in System Settings → Privacy & Security → Accessibility." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta benötigt die Bedienungshilfen-Berechtigung. Erlaube Pasta unter Systemeinstellungen → Datenschutz & Sicherheit → Bedienungshilfen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasta needs Accessibility permission. Allow Pasta in System Settings → Privacy & Security → Accessibility."
+          }
+        }
+      }
+    },
+    "Please release all modifier keys and try again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte lasse alle Sondertasten los und versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please release all modifier keys and try again."
+          }
+        }
+      }
+    },
+    "Spotlight did not confirm keyboard focus. No 4 key was sent. Check that ⌘Space opens Spotlight." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotlight hat den Tastaturfokus nicht bestätigt. Es wurde keine 4 gesendet. Prüfe, ob ⌘Leertaste Spotlight öffnet."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotlight did not confirm keyboard focus. No 4 key was sent. Check that ⌘Space opens Spotlight."
+          }
+        }
+      }
+    },
+    "The key sequence could not be created. Please try again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Tastensequenz konnte nicht erstellt werden. Bitte versuche es erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The key sequence could not be created. Please try again."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.3"
+}

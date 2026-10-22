@@ -84,7 +84,10 @@ final class AppModel {
                 try SMAppService.mainApp.unregister()
             }
         } catch {
-            errorMessage = "Der Start beim Anmelden konnte nicht geändert werden: \(error.localizedDescription)"
+            errorMessage = String(
+                localized: "Could not change the launch at login setting: \(error.localizedDescription)",
+                comment: "Launch at login error. The placeholder contains the localized macOS error message."
+            )
         }
         refresh()
     }

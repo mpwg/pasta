@@ -6,17 +6,17 @@ struct PastaMenu: View {
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
-        Button("Zwischenablagehistorie öffnen") { model.openHistory() }
+        Button("Open Clipboard History") { model.openHistory() }
             .disabled(model.isOpening)
             .globalKeyboardShortcut(.openClipboardHistory)
         Divider()
-        Button("Einstellungen …") {
+        Button("Settings …") {
             openWindow(id: "settings")
             MacApplication.activate()
         }
             .keyboardShortcut(",", modifiers: .command)
         Divider()
-        Button("Pasta beenden") { MacApplication.quit() }
+        Button("Quit Pasta") { MacApplication.quit() }
             .keyboardShortcut("q", modifiers: .command)
         .onAppear { model.refresh() }
     }
@@ -35,7 +35,7 @@ struct SettingsView: View {
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Pasta").font(.largeTitle.bold())
-                    Text("Deine Zwischenablage. Ein Shortcut.")
+                    Text("Your clipboard. One shortcut.")
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
@@ -60,7 +60,7 @@ struct SettingsView: View {
                         .accessibilityIdentifier("actionError")
                     }
 
-                    Text("Pasta öffnet die Zwischenablagehistorie von macOS. Deine kopierten Inhalte bleiben bei macOS.")
+                    Text("Pasta opens the macOS clipboard history. Your copied content stays with macOS.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -70,11 +70,11 @@ struct SettingsView: View {
 
             Divider()
             HStack {
-                Text(model.permissionGranted ? "Bereit" : "Berechtigung fehlt")
+                Text(model.permissionGranted ? LocalizedStringResource("Ready") : LocalizedStringResource("Permission Required"))
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Button("Zwischenablage öffnen") { model.openHistory() }
+                Button("Open Clipboard") { model.openHistory() }
                     .disabled(!model.permissionGranted || model.isOpening)
             }
             .padding(16)
@@ -94,19 +94,19 @@ private struct ShortcutSettings: View {
         GroupBox {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text("Zwischenablage öffnen")
+                    Text("Open Clipboard")
                     Spacer()
                     KeyboardShortcuts.Recorder(for: .openClipboardHistory) { _ in model.refresh() }
                         .shortcutValidation(MacApplication.validateShortcut)
-                        .accessibilityLabel("Shortcut für die Zwischenablagehistorie")
+                        .accessibilityLabel("Clipboard History Shortcut")
                         .accessibilityIdentifier("shortcutRecorder")
                 }
                 HStack {
-                    Text("Klicke in das Feld und drücke deinen Shortcut.")
+                    Text("Click the field and press your shortcut.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Button("Zurücksetzen") { model.resetShortcut() }
+                    Button("Reset") { model.resetShortcut() }
                         .font(.footnote)
                 }
             }
@@ -124,19 +124,21 @@ private struct PermissionSettings: View {
         GroupBox {
             VStack(alignment: .leading, spacing: 10) {
                 Label(
-                    model.permissionGranted ? "Bedienungshilfen erlaubt" : "Bedienungshilfen erlauben",
+                    model.permissionGranted
+                        ? LocalizedStringResource("Accessibility Access Allowed")
+                        : LocalizedStringResource("Allow Accessibility Access"),
                     systemImage: model.permissionGranted ? "checkmark.circle.fill" : "lock"
                 )
                 .foregroundStyle(model.permissionGranted ? Color.green : Color.primary)
                 .accessibilityIdentifier("permissionStatus")
 
-                Text("Pasta benötigt diese Berechtigung, um ⌘Leertaste und anschließend ⌘4 für dich zu drücken.")
+                Text("Pasta needs this permission to press ⌘Space and then ⌘4 for you.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
                 if !model.permissionGranted {
-                    Button("Berechtigung erteilen …") { model.requestPermission() }
-                    Text("Aktiviere Pasta in den Systemeinstellungen. Falls macOS danach einen Neustart der App verlangt, beende und öffne Pasta erneut.")
+                    Button("Grant Permission …") { model.requestPermission() }
+                    Text("Enable Pasta in System Settings. If macOS then asks you to restart the app, quit and reopen Pasta.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -144,7 +146,7 @@ private struct PermissionSettings: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(8)
         } label: {
-            Label("Berechtigung", systemImage: "hand.raised")
+            Label("Permission", systemImage: "hand.raised")
         }
     }
 }
@@ -155,22 +157,22 @@ private struct LoginSettings: View {
     var body: some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 10) {
-                Toggle("Beim Anmelden starten", isOn: Binding(
+                Toggle("Launch at Login", isOn: Binding(
                     get: { model.startsAtLogin },
                     set: { model.setStartsAtLogin($0) }
                 ))
                 .accessibilityIdentifier("launchAtLogin")
                 if model.loginNeedsApproval {
-                    Text("Bitte bestätige Pasta noch in den Anmeldeobjekten von macOS.")
+                    Text("Please approve Pasta in macOS Login Items.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                    Button("Anmeldeobjekte öffnen …") { model.openLoginSettings() }
+                    Button("Open Login Items …") { model.openLoginSettings() }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(8)
         } label: {
-            Label("Start", systemImage: "power")
+            Label("Launch", systemImage: "power")
         }
     }
 }

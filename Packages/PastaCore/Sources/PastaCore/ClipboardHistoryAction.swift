@@ -19,15 +19,31 @@ public enum HistoryActionError: Error, Equatable, LocalizedError {
     case eventCreationFailed
 
     public var errorDescription: String? {
+        String(localized: message)
+    }
+
+    var message: LocalizedStringResource {
         switch self {
         case .permissionMissing:
-            "Pasta benötigt die Bedienungshilfen-Berechtigung. Erlaube Pasta unter Systemeinstellungen → Datenschutz & Sicherheit → Bedienungshilfen."
+            LocalizedStringResource(
+                "Pasta needs Accessibility permission. Allow Pasta in System Settings → Privacy & Security → Accessibility.",
+                bundle: .atURL(Bundle.module.bundleURL)
+            )
         case .modifiersHeld:
-            "Bitte lasse alle Sondertasten los und versuche es erneut."
+            LocalizedStringResource(
+                "Please release all modifier keys and try again.",
+                bundle: .atURL(Bundle.module.bundleURL)
+            )
         case .spotlightNotFocused:
-            "Spotlight hat den Tastaturfokus nicht bestätigt. Es wurde keine 4 gesendet. Prüfe, ob ⌘Leertaste Spotlight öffnet."
+            LocalizedStringResource(
+                "Spotlight did not confirm keyboard focus. No 4 key was sent. Check that ⌘Space opens Spotlight.",
+                bundle: .atURL(Bundle.module.bundleURL)
+            )
         case .eventCreationFailed:
-            "Die Tastensequenz konnte nicht erstellt werden. Bitte versuche es erneut."
+            LocalizedStringResource(
+                "The key sequence could not be created. Please try again.",
+                bundle: .atURL(Bundle.module.bundleURL)
+            )
         }
     }
 }
