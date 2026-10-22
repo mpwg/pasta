@@ -189,11 +189,12 @@
 				};
 			};
 			buildConfigurationList = 40393547308A24B6002B22BC /* Build configuration list for PBXProject "Pasta" */;
-			developmentRegion = en;
+			developmentRegion = de;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = 40393543308A24B6002B22BC;
 			minimizedProjectReferenceProxies = 1;
@@ -201,7 +202,7 @@
 				7A57A0000000000000000001 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				7A57A0000000000000000002 /* XCLocalSwiftPackageReference "Packages/PastaCore" */,
 			);
-			preferredProjectObjectVersion = 77;
+			preferredProjectObjectVersion = 110;
 			productRefGroup = 4039354D308A24B6002B22BC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -320,7 +321,9 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -374,6 +377,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};

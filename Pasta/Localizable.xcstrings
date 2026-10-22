@@ -1,0 +1,78 @@
+{
+  "sourceLanguage" : "de",
+  "strings" : {
+    "Aktiviere Pasta in den Systemeinstellungen. Falls macOS danach einen Neustart der App verlangt, beende und öffne Pasta erneut." : {
+
+    },
+    "Anmeldeobjekte öffnen …" : {
+
+    },
+    "Bedienungshilfen erlauben" : {
+
+    },
+    "Bedienungshilfen erlaubt" : {
+
+    },
+    "Beim Anmelden starten" : {
+
+    },
+    "Berechtigung" : {
+
+    },
+    "Berechtigung erteilen …" : {
+
+    },
+    "Berechtigung fehlt" : {
+
+    },
+    "Bereit" : {
+
+    },
+    "Bitte bestätige Pasta noch in den Anmeldeobjekten von macOS." : {
+
+    },
+    "Deine Zwischenablage. Ein Shortcut." : {
+
+    },
+    "Einstellungen …" : {
+
+    },
+    "Klicke in das Feld und drücke deinen Shortcut." : {
+
+    },
+    "Pasta" : {
+
+    },
+    "Pasta – Einstellungen" : {
+
+    },
+    "Pasta beenden" : {
+
+    },
+    "Pasta benötigt diese Berechtigung, um ⌘Leertaste und anschließend ⌘4 für dich zu drücken." : {
+
+    },
+    "Pasta öffnet die Zwischenablagehistorie von macOS. Deine kopierten Inhalte bleiben bei macOS." : {
+
+    },
+    "Shortcut" : {
+
+    },
+    "Shortcut für die Zwischenablagehistorie" : {
+
+    },
+    "Start" : {
+
+    },
+    "Zurücksetzen" : {
+
+    },
+    "Zwischenablage öffnen" : {
+
+    },
+    "Zwischenablagehistorie öffnen" : {
+
+    }
+  },
+  "version" : "1.3"
+}
