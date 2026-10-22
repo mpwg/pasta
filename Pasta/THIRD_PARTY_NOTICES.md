@@ -5,7 +5,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 # Third-party notices
 
-Pasta uses [KeyboardShortcuts 3.1.0](https://github.com/sindresorhus/KeyboardShortcuts/tree/3.1.0) by Sindre Sorhus. The following license applies to this dependency; its original terms and attribution are preserved.
+Pasta uses [KeyboardShortcuts](https://github.com/sindresorhus/KeyboardShortcuts) by Sindre Sorhus. The following license applies to this dependency; its original terms and attribution are preserved.
 
 MIT License
 
