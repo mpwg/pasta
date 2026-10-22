@@ -1,0 +1,58 @@
+# SPDX-FileCopyrightText: 2026 Matthias Wallner-Géhri
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+name: Prepare release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Committed marketing version (X.Y.Z, without v)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prepare-release
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
+  release:
+    needs: verify
+    runs-on: xcode-27
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - name: Build and verify release artifacts
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: python3 scripts/prepare-release.py "$RELEASE_VERSION"
+      - name: Create draft with exact commit and corresponding source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          output="dist/$RELEASE_VERSION"
+          gh release create "v$RELEASE_VERSION" \
+            --draft --target "$GITHUB_SHA" --title "Pasta $RELEASE_VERSION" \
+            --notes-file "$output/release-notes.md" \
+            "$output/Pasta-$RELEASE_VERSION-macOS-arm64.zip" \
+            "$output/Pasta-$RELEASE_VERSION-source.tar.gz" \
+            "$output/SHA256SUMS"
