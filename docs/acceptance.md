@@ -7,23 +7,24 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 ## GitHub preparation — current evidence
 
-The app and test source was verified locally on October 22, 2026 with macOS 27.0.1, Apple Silicon and Xcode 27.1. Later documentation/workflow-only edits do not replace these native results. No public release has been published.
+The app and test source was verified locally on October 22, 2026 with macOS 27.0.1, Apple Silicon and Xcode 27.1. Later documentation/workflow-only edits do not replace these native results. Pasta 0.1.0 has been prepared as a draft from commit d119a3a; no public release has been published.
 
 | Criterion | Status | Evidence / next step |
 | --- | --- | --- |
 | English documentation and GPL-3.0-or-later coverage | passed | Project checker passes for all tracked files; both bundled notices match the root copies and GPL bytes match the original GNU text. Relative Markdown links resolve. |
 | Public bundle identifiers and shared scheme | passed | Clean clone builds the app and both test targets. Extracted arm64 Release bundle reports eu.mpwg.Pasta, version 0.1.0 and minimum macOS 27.0; all test targets use eu.mpwg. |
 | Current core and native localization tests | passed | Xcode MCP RunAllTests at 14:34 CEST: 17 passed, 0 failed/skipped, including English, German and French-to-English fallback. Fresh-clone core test execution also passed. |
-| Release app, signature, notices, source and checksums | passed locally | Packaging commit c983ea1 produced a ZIP whose ad hoc signature remains valid after extraction, identical bundled notices, SHA-256 checksums and source archive byte-identical to that commit, including the resolved dependency source. |
+| Release app, signature, notices, source and checksums | passed | Downloaded the actual GitHub draft assets for d119a3a: arm64 ZIP signature remains valid after extraction, bundled notices are identical, both SHA-256 checksums match, and source is byte-identical to that commit with resolved dependency source included. |
 | Failure paths in project/release checks | passed | Rejected invalid version, dirty checkout, mismatched app version, missing SPDX and malformed JSON. |
-| GitHub CI | passed | [CI run 39780749894](https://github.com/mpwg/pasta/actions/runs/39780749894) passed for c983ea1 using the readable v7 action tags. Further pushes require their own check. |
-| Draft release creation on GitHub | pending | Run Prepare release after merging the workflow to the default branch; verify remote assets and keep the release a draft. |
-| Renovate configuration and dependency coverage | passed locally | Renovate 44.176.2 strict validation passed. Its actual managers extracted all three Actions, Python, the Xcode requirement and resolved commit. Replacement simulation updated both the project version and lockfile version/commit together. Maintainer confirmed hosted App access. Check the hosted Dashboard after merge. |
+| GitHub CI | passed for the release source | [CI run 39781353813](https://github.com/mpwg/pasta/actions/runs/39781353813) passed for d119a3a using the readable v7 action tags. Documentation-only follow-ups do not change the verified app or tooling. |
+| Draft release creation on GitHub | passed | [Prepare release run 39781380457](https://github.com/mpwg/pasta/actions/runs/39781380457) passed. [Pasta 0.1.0 draft](https://github.com/mpwg/pasta/releases/tag/untagged-733ad977c07ac7c7dc15) targets d119a3a and contains the app ZIP, corresponding source archive and SHA256SUMS. API confirms isDraft=true and no publication date. |
+| Renovate configuration and dependency coverage | passed locally | Renovate 44.176.2 strict validation passed. Its actual managers extracted all three Actions, Python, the Xcode requirement and resolved commit. Replacement simulation updated both the project version and lockfile version/commit together. Maintainer confirmed hosted App access. |
+| First hosted Renovate run | not verified | Maintainer confirmed App access; no hosted Dashboard or bot PR was visible at handoff. Configuration validation and local extraction/replacement tests do not establish a hosted run. |
 | Source and history publication review | passed within stated limits | Pattern scan of the original 12 commits and first preparation commits found no credential-pattern matches or tracked build artifacts. Old temporary result paths occur in historical docs/abnahme.md only; current documentation removes them. This is a bounded readiness check, not an exhaustive security audit. |
 | Quarantined browser download installation and real Accessibility action | not verified | Download the actual release ZIP through a browser and test Gatekeeper approval and the shortcut from /Applications after granting Accessibility. Local extraction and UI tests do not establish this. |
 | Launch at login after a real sign-out/sign-in | not verified | Enable launch at login in the installed public build, sign out and back in, and check the menu bar and shortcut. Do not terminate the user's session automatically. |
 
-The implementation is not fully accepted while the manual installation and real-login checks remain unverified. Historical results below predate the public identity and are retained only with their original limits.
+The implementation is not fully accepted while the manual installation, real-login and first hosted Renovate-run checks remain unverified. Historical results below predate the public identity and are retained only with their original limits.
 
 ## Historical localization acceptance
 
