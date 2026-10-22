@@ -17,6 +17,7 @@ trap 'rm -rf "$stage_dir"' EXIT
 app_dir="$stage_dir/Pasta.app"
 mkdir -p "$app_dir/Contents/MacOS" "$app_dir/Contents/Resources"
 cp Resources/Info.plist "$app_dir/Contents/Info.plist"
+cp THIRD_PARTY_NOTICES.md "$app_dir/Contents/Resources/"
 cp "$binary_dir/Pasta" "$app_dir/Contents/MacOS/Pasta"
 for resource in "$binary_dir"/*.bundle; do
     [[ -d "$resource" ]] || continue
