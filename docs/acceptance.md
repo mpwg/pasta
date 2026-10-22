@@ -7,17 +7,23 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 ## GitHub preparation — current evidence
 
-Implementation and current verification are recorded below before handoff. Historical tests in the following sections predate the public bundle identifier and do not establish acceptance of a release download.
+The app and test source was verified locally on October 22, 2026 with macOS 27.0.1, Apple Silicon and Xcode 27.1. Later documentation/workflow-only edits do not replace these native results. No public release has been published.
 
 | Criterion | Status | Evidence / next step |
 | --- | --- | --- |
-| English documentation and GPL-3.0-or-later file coverage | pending | Run project checks on the final tracked tree. |
-| Public bundle identifiers and shared scheme | pending | Inspect a fresh-checkout build. |
-| Current core and native localization tests | pending | Run tests after the identity change. |
-| Release app, ad hoc signature, arm64, notices, matching source and checksums | pending | Package and inspect a committed build. |
-| GitHub CI and draft release workflow | pending | Run the workflows against the pushed commit. |
-| Quarantined browser download installation | not verified | Download the actual release ZIP through a browser and test Gatekeeper approval and Accessibility from `/Applications`. Local extraction does not establish this. |
+| English documentation and GPL-3.0-or-later coverage | passed | Project checker passes for all tracked files; both bundled notices match the root copies and GPL bytes match the original GNU text. Relative Markdown links resolve. |
+| Public bundle identifiers and shared scheme | passed | Clean clone builds the app and both test targets. Extracted arm64 Release bundle reports eu.mpwg.Pasta, version 0.1.0 and minimum macOS 27.0; all test targets use eu.mpwg. |
+| Current core and native localization tests | passed | Xcode MCP RunAllTests at 14:34 CEST: 17 passed, 0 failed/skipped, including English, German and French-to-English fallback. Fresh-clone core test execution also passed. |
+| Release app, signature, notices, source and checksums | passed locally | Packaging commit c983ea1 produced a ZIP whose ad hoc signature remains valid after extraction, identical bundled notices, SHA-256 checksums and source archive byte-identical to that commit, including the resolved dependency source. |
+| Failure paths in project/release checks | passed | Rejected invalid version, dirty checkout, mismatched app version, missing SPDX and malformed JSON. |
+| GitHub CI | passed | [CI run 39780749894](https://github.com/mpwg/pasta/actions/runs/39780749894) passed for c983ea1 using the readable v7 action tags. Further pushes require their own check. |
+| Draft release creation on GitHub | pending | Run Prepare release after merging the workflow to the default branch; verify remote assets and keep the release a draft. |
+| Renovate configuration and dependency coverage | passed locally | Renovate 44.176.2 strict validation passed. Its actual managers extracted all three Actions, Python, the Xcode requirement and resolved commit. Replacement simulation updated both the project version and lockfile version/commit together. Maintainer confirmed hosted App access. Check the hosted Dashboard after merge. |
+| Source and history publication review | passed within stated limits | Pattern scan of the original 12 commits and first preparation commits found no credential-pattern matches or tracked build artifacts. Old temporary result paths occur in historical docs/abnahme.md only; current documentation removes them. This is a bounded readiness check, not an exhaustive security audit. |
+| Quarantined browser download installation and real Accessibility action | not verified | Download the actual release ZIP through a browser and test Gatekeeper approval and the shortcut from /Applications after granting Accessibility. Local extraction and UI tests do not establish this. |
 | Launch at login after a real sign-out/sign-in | not verified | Enable launch at login in the installed public build, sign out and back in, and check the menu bar and shortcut. Do not terminate the user's session automatically. |
+
+The implementation is not fully accepted while the manual installation and real-login checks remain unverified. Historical results below predate the public identity and are retained only with their original limits.
 
 ## Historical localization acceptance
 
