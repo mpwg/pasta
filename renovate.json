@@ -7,8 +7,6 @@
   "branchPrefix": "codex/renovate/",
   "dependencyDashboard": true,
   "automerge": false,
-  "prHourlyLimit": 2,
-  "prConcurrentLimit": 3,
   "packageRules": [
     {
       "matchManagers": [
