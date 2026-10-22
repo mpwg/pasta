@@ -4,13 +4,6 @@ import Observation
 import PastaCore
 import ServiceManagement
 
-extension KeyboardShortcuts.Name {
-    static let openClipboardHistory = Self(
-        "openClipboardHistory",
-        initial: .init(.v, modifiers: [.command, .shift])
-    )
-}
-
 @MainActor @Observable
 final class AppModel {
     let showsSettingsOnLaunch: Bool
@@ -19,7 +12,6 @@ final class AppModel {
     private(set) var loginNeedsApproval = false
     private(set) var isOpening = false
     private(set) var errorMessage: String?
-    private(set) var shortcutDescription = "⌘⇧V"
 
     @ObservationIgnored private let keyboard: MacSpotlightKeyboard
     @ObservationIgnored private let action: ClipboardHistoryAction
@@ -30,7 +22,8 @@ final class AppModel {
         let keyboard = MacSpotlightKeyboard()
         self.keyboard = keyboard
         action = ClipboardHistoryAction(keyboard: keyboard)
-        showsSettingsOnLaunch = !UserDefaults.standard.bool(forKey: "hasShownSettings") || !keyboard.hasPermission
+        showsSettingsOnLaunch = CommandLine.arguments.contains("--show-settings")
+            || !UserDefaults.standard.bool(forKey: "hasShownSettings") || !keyboard.hasPermission
     }
 
     func start() {
@@ -52,7 +45,6 @@ final class AppModel {
         let status = SMAppService.mainApp.status
         startsAtLogin = status == .enabled || status == .requiresApproval
         loginNeedsApproval = status == .requiresApproval
-        shortcutDescription = KeyboardShortcuts.getShortcut(for: .openClipboardHistory)?.description ?? "Kein Shortcut"
     }
 
     func openHistory() {

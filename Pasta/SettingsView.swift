@@ -8,7 +8,7 @@ struct PastaMenu: View {
     var body: some View {
         Button("Zwischenablagehistorie öffnen") { model.openHistory() }
             .disabled(model.isOpening)
-        Text(model.shortcutDescription)
+            .globalKeyboardShortcut(.openClipboardHistory)
         Divider()
         Button("Einstellungen …") {
             openWindow(id: "settings")
@@ -97,13 +97,7 @@ private struct ShortcutSettings: View {
                     Text("Zwischenablage öffnen")
                     Spacer()
                     KeyboardShortcuts.Recorder(for: .openClipboardHistory) { _ in model.refresh() }
-                        .shortcutValidation { shortcut in
-                            if shortcut == .init(.space, modifiers: .command)
-                                || shortcut == .init(.four, modifiers: .command) {
-                                return .disallow(reason: "Diese Tastenkombination wird zum Öffnen der macOS-Zwischenablage benötigt.")
-                            }
-                            return .allow
-                        }
+                        .shortcutValidation(MacApplication.validateShortcut)
                         .accessibilityLabel("Shortcut für die Zwischenablagehistorie")
                         .accessibilityIdentifier("shortcutRecorder")
                 }

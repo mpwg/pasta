@@ -17,23 +17,20 @@ Pasta liest oder speichert keine Zwischenablageinhalte, überwacht keine Kopierv
 
 Menüleiste, Einstellungen und App-Lebenszyklus sind mit SwiftUI implementiert, ohne Mac Catalyst, UIKit oder eigene AppKit-Fenster/-Delegates. Kleine AppKit-Aufrufe werden für macOS-Dienste wie Aktivieren, Verbergen, Beenden und Öffnen der Systemeinstellungen verwendet. Der native Tastaturkern bleibt als eigenes Swift-Paket unabhängig von der Oberfläche prüfbar. Die aktuelle Abnahme mit Belegen und offenen Prüfungen steht in [docs/abnahme.md](docs/abnahme.md).
 
-## Bauen und prüfen
+## In Xcode bauen und prüfen
 
-Für die App wird **Xcode 27 oder neuer** benötigt. Einmal starten und die Einrichtung abschließen. Falls Xcode nicht als aktive Entwicklerumgebung eingestellt ist, kann `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` vorangestellt werden. Die Command Line Tools allein enthalten die benötigten SwiftUI-Makro-Erweiterungen nicht. Für die isolierten Kerntests und `PastaProbe` genügen die Command Line Tools mit Swift 6.2+ und macOS-27-SDK.
+Benötigt wird **Xcode 27 oder neuer**. Einmal starten und die Einrichtung abschließen. Die Command Line Tools allein enthalten die benötigten SwiftUI-Makro-Erweiterungen nicht.
 
-```sh
-./scripts/test.sh
-./scripts/build-app.sh
-open dist/Pasta.app
-swift run --build-system native PastaProbe
-swift run --build-system native PastaProbe --open
-```
+1. **Pasta.xcodeproj** öffnen.
+2. Das Scheme **Pasta** und das Ziel **My Mac** wählen.
+3. Mit **⌘R** die native App bauen und starten.
+4. Mit **⌘U** die Kerntests und den nativen Oberflächentest ausführen.
 
-Das Build-Skript erstellt `dist/Pasta.app` mit einer lokalen Ad-hoc-Signatur. Für die Nutzung die App nach `/Applications` kopieren und **von dort starten**, bevor Rechte erteilt oder Autostart aktiviert werden. Die lokale Signatur ist keine Developer-ID-Signatur und keine Notarisierung. Veröffentlichung ist nicht Teil dieses Arbeitspakets. Ein neuer Build kann eine erneute Rechtevergabe und Autostart-Registrierung erfordern.
+Es gibt keine manuellen Build-Skripte oder Shell-Build-Phasen. Xcode verwaltet das App-Bundle und die Paketabhängigkeiten: das lokale Paket `Packages/PastaCore` und KeyboardShortcuts, fest auf Version 3.1.0 gesetzt. `PastaTests` enthält Swift-Testing-Tests für den Kern im regulären App-Testhost; die Tests selbst bedienen keine Oberfläche und senden keine echten Tastendrücke. `PastaUITests` verwendet das für native Oberflächenautomation erforderliche XCTest. Der Startparameter `--show-settings` öffnet die Einstellungen unabhängig vom bisherigen Einrichtungsstand, ohne Rechte oder Nutzereinstellungen zu umgehen.
+
+Das Projekt verwendet eine lokale Ad-hoc-Signatur. Für die dauerhafte Nutzung die gebaute **Pasta.app** aus Xcodes Produktgruppe nach `/Applications` kopieren und **von dort starten**, bevor Rechte erteilt oder Autostart aktiviert werden. Die lokale Signatur ist keine Developer-ID-Signatur und keine Notarisierung. Veröffentlichung ist nicht Teil dieses Arbeitspakets. Ein neuer Build kann eine erneute Rechtevergabe und Autostart-Registrierung erfordern.
 
 Pasta zeigt beim ersten Start die Einstellungen. Klicke auf **Berechtigung erteilen …** und aktiviere Pasta in den Bedienungshilfen. Danach lässt sich die Historie mit dem Shortcut oder über das Menüleistensymbol öffnen. Im Shortcut-Feld kann eine andere Kombination aufgezeichnet, gelöscht oder auf ⌘⇧V zurückgesetzt werden. ⌘Leertaste und ⌘4 sind für die interne Sequenz reserviert. **Beim Anmelden starten** ist standardmäßig ausgeschaltet und verwendet die Anmeldeobjekte von macOS.
-
-`PastaProbe` zeigt ohne `--open` nur Berechtigung und Fokusstatus an. Mit `--open` führt es die echte Tastensequenz aus. Es muss im angemeldeten Desktop laufen und benötigt die entsprechenden Rechte des startenden Terminals. Es liest keine Zwischenablageinhalte.
 
 Unter macOS 27 kann Spotlight durch den Systemprozess `com.apple.campo` in `/System/Applications/Siri AI.app` bereitgestellt werden. Pasta erkennt dort zusätzlich die Kennung `SpotlightSearchField`, um Spotlight von anderen Siri-Oberflächen zu unterscheiden. Bei deaktivierter Campo-Systemfunktion wird der klassische Spotlight-Systemprozess erkannt. Diese Betriebssystemdetails müssen bei späteren macOS-Versionen erneut geprüft werden.
 

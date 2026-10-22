@@ -1,6 +1,6 @@
 # Abnahme Pasta
 
-Stand: 22. Oktober 2026. Umgebung: macOS 27.0.1 (26A434), Apple Silicon. Nach Installation von Xcode 27.1 (27A9275) besteht der Debug-App-Build (`swift build --product Pasta`). Diese Matrix wird nach der App-Integration aktualisiert.
+Stand: 22. Oktober 2026. Umgebung: macOS 27.0.1 (26A434), Apple Silicon, Xcode 27.1 (27A9275). Das native Projekt `Pasta.xcodeproj` wurde über Xcode-MCP erzeugt und auf ausschließlich macOS konfiguriert. Die zwei Paketverknüpfungen wurden mit ausdrücklicher Nutzerfreigabe direkt ergänzt, da der MCP-Server dafür keinen Aufruf bietet. Aktueller App-/UI-Test-Build über MCP erfolgreich; aktuelle vollständige Testausführung läuft noch.
 
 | Kriterium | Status | Beleg |
 | --- | --- | --- |
@@ -15,7 +15,14 @@ Stand: 22. Oktober 2026. Umgebung: macOS 27.0.1 (26A434), Apple Silicon. Nach In
 | Fehlende/entzogene Berechtigung verständlich anzeigen | offen | SwiftUI-Status und Fehleranzeige implementiert; Integrationstest folgt. |
 | Autostart nach erneuter Anmeldung | offen | SMAppService.mainApp und SwiftUI-Schalter implementiert; echte Neuanmeldung erforderlich. |
 | SwiftUI-Oberfläche und -Lebenszyklus, kein Catalyst/UIKit | erfüllt | `MenuBarExtra` und `Window` im SwiftUI-App-Einstieg; keine NSWindow-/NSHostingController-/AppDelegate-Konstruktion. Debug-Build erfolgreich. |
+| Reguläres Xcode-Projekt ohne manuelle Build-Skripte | erfüllt | App-, Swift-Testing- und XCTest-UI-Targets im nativen Projekt. `SDKROOT` und `SUPPORTED_PLATFORMS` ausschließlich `macosx`; keine Shell-Build-Phase. Bauen/Testen über Xcode-MCP. |
 | Keine Zwischenablageinhalte lesen oder speichern | erfüllt | Kern verwendet ausschließlich Prozess-, Fokus- und UI-Kennungsattribute, keine Pasteboard-API und keine AX-Feldwerte. |
 | README dokumentiert Nutzung und Grenzen | erfüllt | README enthält Voraussetzungen, Tastensequenz, Systemprozess-Besonderheit und Testaufrufe. |
 
 Das Arbeitspaket ist noch nicht vollständig abgenommen.
+
+## Zwischenstand vor der Xcode-Projektumstellung
+
+Am vorherigen lokalen App-Bundle wurden nativ überprüft: Menüleiste ohne Dock-Symbol (`activationPolicy=1`), verständlicher Fehler bei fehlenden Rechten, nach manueller Freigabe Status „Bereit“, echte Shortcut-Aufnahme auf ⌃⌥⌘P und Erhalt nach regulärem App-Neustart (PID 36168 → 36345), anschließend Rücksetzen auf ⌘⇧V. Spotlight wurde aus Finder und nach fünf Auslösungen als Suchfeld `SpotlightSearchField` mit statischem Platzhalter „Zwischenablage“ erkannt. Das Öffnen aus Codex war in diesem Zwischenlauf noch nicht zuverlässig belegt und wird am endgültigen Xcode-Build erneut geprüft.
+
+Historische lokale Belege: `.build/verification/e2e-custom.txt`, `restarted-shortcut.txt`, `reset-default.txt`, `settings-no-permission.png`, `settings-ready.png`. Sie ersetzen keine Prüfung des endgültigen Xcode-Builds.

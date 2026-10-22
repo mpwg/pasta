@@ -1,10 +1,27 @@
 import AppKit
 import ApplicationServices
+import KeyboardShortcuts
+
+extension KeyboardShortcuts.Name {
+    static let openClipboardHistory = Self(
+        "openClipboardHistory",
+        initial: .init(.v, modifiers: [.command, .shift])
+    )
+}
+
 
 /// AppKit is only used for macOS application services, not for our interface.
 @MainActor
 enum MacApplication {
     static var willTerminateNotification: Notification.Name { NSApplication.willTerminateNotification }
+
+    static func validateShortcut(_ shortcut: KeyboardShortcuts.Shortcut) -> KeyboardShortcuts.ValidationResult {
+        if shortcut == .init(.space, modifiers: .command)
+            || shortcut == .init(.four, modifiers: .command) {
+            return .disallow(reason: "Diese Tastenkombination wird zum Öffnen der macOS-Zwischenablage benötigt.")
+        }
+        return .allow
+    }
 
     static func activate() { NSApplication.shared.activate() }
 

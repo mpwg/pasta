@@ -12,7 +12,6 @@ let package = Package(
     platforms: [.macOS("27.0")],
     products: [.library(name: "PastaCore", targets: ["PastaCore"])],
     targets: [
-        .target(name: "PastaCore", swiftSettings: concurrency),
-        .testTarget(name: "PastaCoreTests", dependencies: ["PastaCore"], swiftSettings: concurrency)
+        .target(name: "PastaCore", swiftSettings: concurrency)
     ]
 )

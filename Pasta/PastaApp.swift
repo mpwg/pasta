@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 @main
@@ -34,6 +35,7 @@ private struct PastaStatusLabel: View {
 
     var body: some View {
         Label("Pasta", systemImage: "clipboard")
+            .accessibilityLabel("Pasta")
             .onAppear { model.start() }
             .onChange(of: model.errorMessage) { _, error in
                 guard error != nil else { return }
