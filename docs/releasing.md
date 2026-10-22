@@ -18,7 +18,7 @@ Private vulnerability reporting must be enabled in the repository's Security set
 
 ## Local packaging
 
-On an Apple Silicon Mac with Xcode 27+, run from a clean committed checkout:
+On an Apple Silicon Mac with Xcode 27+ and Python 3.12 or later, run from a clean committed checkout:
 
 ```sh
 python3 scripts/check-project.py
