@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Matthias Wallner-Géhri
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# GitHub-hosted Xcode 27 image, absent from actionlint 1.7.12's built-in list:
+# https://github.blog/changelog/2026-10-15-xcode-27-runner-image-generally-available/
+self-hosted-runner:
+  labels:
+    - xcode-27

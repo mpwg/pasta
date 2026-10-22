@@ -50,6 +50,8 @@ jobs:
         run: |
           set -euo pipefail
           output="dist/$RELEASE_VERSION"
+          gh api "repos/$GH_REPO/git/matching-refs/tags/v$RELEASE_VERSION" > "$RUNNER_TEMP/release-tags.json"
+          python3 -c 'import json, os; refs = json.load(open(os.environ["RUNNER_TEMP"] + "/release-tags.json")); tag = "refs/tags/v" + os.environ["RELEASE_VERSION"]; assert all(ref["ref"] != tag for ref in refs), "Release tag already exists; never reuse or move a published version"'
           gh release create "v$RELEASE_VERSION" \
             --draft --target "$GITHUB_SHA" --title "Pasta $RELEASE_VERSION" \
             --notes-file "$output/release-notes.md" \
