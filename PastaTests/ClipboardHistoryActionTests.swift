@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import PastaCore
 
@@ -33,6 +34,31 @@ private final class Time {
 
 @Suite(.timeLimit(.minutes(1))) @MainActor
 struct ClipboardHistoryActionTests {
+    @Test(arguments: [
+        (HistoryActionError.permissionMissing,
+         "Pasta benötigt die Bedienungshilfen-Berechtigung. Erlaube Pasta unter Systemeinstellungen → Datenschutz & Sicherheit → Bedienungshilfen.",
+         "Pasta needs Accessibility permission. Allow Pasta in System Settings → Privacy & Security → Accessibility."),
+        (.modifiersHeld,
+         "Bitte lasse alle Sondertasten los und versuche es erneut.",
+         "Please release all modifier keys and try again."),
+        (.spotlightNotFocused,
+         "Spotlight hat den Tastaturfokus nicht bestätigt. Es wurde keine 4 gesendet. Prüfe, ob ⌘Leertaste Spotlight öffnet.",
+         "Spotlight did not confirm keyboard focus. No 4 key was sent. Check that ⌘Space opens Spotlight."),
+        (.eventCreationFailed,
+         "Die Tastensequenz konnte nicht erstellt werden. Bitte versuche es erneut.",
+         "The key sequence could not be created. Please try again.")
+    ])
+    func `Core errors resolve German and English from the package bundle`(
+        error: HistoryActionError, german: String, english: String
+    ) {
+        var message = error.message
+        message.locale = Locale(identifier: "de")
+        #expect(String(localized: message) == german)
+        message.locale = Locale(identifier: "en")
+        #expect(String(localized: message) == english)
+        #expect(error.errorDescription == String(localized: error.message))
+    }
+
     @Test(arguments: [false, true])
     func `Command stays held, and already focused Spotlight is not toggled`(alreadyFocused: Bool) async throws {
         let keyboard = Keyboard()

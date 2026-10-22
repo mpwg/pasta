@@ -1,5 +1,22 @@
 # Abnahme Pasta
 
+## Lokalisierung: Englisch als Ausgangssprache, Deutsch als erste Übersetzung
+
+Aktuelle Prüfung am 22. Oktober 2026 um 14:02 Uhr: Xcode-MCP `RunAllTests`, Scheme und Plan „Pasta“, Ziel „My Mac“: **17 Fälle bestanden, 0 fehlgeschlagen, 0 übersprungen**. Der Build einschließlich der Testtargets war erfolgreich. Ergebnis: `/var/folders/b5/h7f8ws9x5cj4_5n6rtgypdhh0000gn/T/ActionArtifacts/default/RunAllTests/Test-Pasta-2026.10.22_14-02-07-+0200.xcresult`.
+
+| Kriterium | Status | Beleg |
+| --- | --- | --- |
+| Englisch als Ausgangs- und Rückfallsprache | erfüllt | Projekt-`developmentRegion`, Paket-`defaultLocalization` und beide Kataloge auf `en`; nativer Oberflächentest mit Französisch bestätigt englische Rückfalltexte. |
+| Deutsche Übersetzung der App | erfüllt | Alle 26 Katalogeinträge übersetzt; nativer Oberflächentest prüft Fenstertitel, Reset-Knopf, Untertitel, Berechtigungsstatus, Bereitschaft und Autostart-Beschriftung auf Deutsch. |
+| Englische Oberfläche | erfüllt | Derselbe native Oberflächentest prüft die englischen Texte; der Aufruf über das Menüleistensymbol prüft zusätzlich den lokalisierten Menüpunkt „Settings …“. |
+| PastaCore-Fehler unabhängig vom App-Katalog lokalisiert | erfüllt | Eigener Ressourcenkatalog mit vier Meldungen und explizitem Paket-Bundle; vier parametrisierte Fälle prüfen jeweils den vollständigen deutschen und englischen Text sowie die `LocalizedError`-Anbindung. |
+| Dynamische Statusanzeigen und weitere Fehlermeldungen lokalisiert | erfüllt | Statusauswahl verwendet `LocalizedStringResource`; Shortcut-Validierung und interpolierter Autostart-Fehler verwenden `String(localized:)`. Katalogprüfung bestätigt vollständige Texte und identische Platzhalter. |
+| Bisheriges Kernverhalten erhalten | erfüllt | Alle zehn bisherigen Kerntestfälle weiterhin erfolgreich. |
+
+Die Oberflächentests öffnen die Einstellungen bei Bedarf über das Menüleistensymbol, da das Fenster beim automatisierten Start nicht zuverlässig erscheint. Der bestehende Autostart-Vorbehalt nach echter Neuanmeldung aus der folgenden ursprünglichen Abnahme bleibt bestehen und betrifft nicht dieses Lokalisierungspaket.
+
+## Ursprüngliche Funktionsabnahme
+
 Stand: 22. Oktober 2026. Umgebung: macOS 27.0.1 (26A434), Apple Silicon, Xcode 27.1 (27A9275). Das native Projekt `Pasta.xcodeproj` wurde über Xcode-MCP erzeugt und auf ausschließlich macOS konfiguriert. Die zwei Paketverknüpfungen wurden mit ausdrücklicher Nutzerfreigabe direkt ergänzt, da der MCP-Server dafür keinen Aufruf bietet. App-/UI-Test-Build und vollständige Testausführung über MCP erfolgreich: **11 Fälle bestanden, 0 fehlgeschlagen, 0 übersprungen**. Geprüfter App-/Test-Quellstand: `6aa583a`.
 
 Xcode-MCP `RunAllTests`, Scheme „Pasta“, Plan „Pasta“, Ziel „My Mac“, 22. Oktober 2026 um 13:18 Uhr: neun Swift-Testing-Tests mit zehn Fällen und ein nativer XCTest-Oberflächentest. Lokaler Ergebnisverweis: `.build/verification/xcode-tests-native.json`; xcresult: `/var/folders/b5/h7f8ws9x5cj4_5n6rtgypdhh0000gn/T/ActionArtifacts/default/RunAllTests/Test-Pasta-2026.10.22_13-18-21-+0200.xcresult`.
