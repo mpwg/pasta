@@ -1,6 +1,11 @@
-# Drittanbieter
+<!--
+SPDX-FileCopyrightText: 2026 Matthias Wallner-Géhri
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
 
-Pasta verwendet [KeyboardShortcuts 3.1.0](https://github.com/sindresorhus/KeyboardShortcuts/tree/3.1.0) von Sindre Sorhus. Die folgende Lizenz gilt für diese Abhängigkeit.
+# Third-party notices
+
+Pasta uses [KeyboardShortcuts 3.1.0](https://github.com/sindresorhus/KeyboardShortcuts/tree/3.1.0) by Sindre Sorhus. The following license applies to this dependency; its original terms and attribution are preserved.
 
 MIT License
 

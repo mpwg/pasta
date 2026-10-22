@@ -1,0 +1,74 @@
+<!--
+SPDX-FileCopyrightText: 2026 Matthias Wallner-Géhri
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+# Pasta acceptance
+
+## GitHub preparation — current evidence
+
+Implementation and current verification are recorded below before handoff. Historical tests in the following sections predate the public bundle identifier and do not establish acceptance of a release download.
+
+| Criterion | Status | Evidence / next step |
+| --- | --- | --- |
+| English documentation and GPL-3.0-or-later file coverage | pending | Run project checks on the final tracked tree. |
+| Public bundle identifiers and shared scheme | pending | Inspect a fresh-checkout build. |
+| Current core and native localization tests | pending | Run tests after the identity change. |
+| Release app, ad hoc signature, arm64, notices, matching source and checksums | pending | Package and inspect a committed build. |
+| GitHub CI and draft release workflow | pending | Run the workflows against the pushed commit. |
+| Quarantined browser download installation | not verified | Download the actual release ZIP through a browser and test Gatekeeper approval and Accessibility from `/Applications`. Local extraction does not establish this. |
+| Launch at login after a real sign-out/sign-in | not verified | Enable launch at login in the installed public build, sign out and back in, and check the menu bar and shortcut. Do not terminate the user's session automatically. |
+
+## Historical localization acceptance
+
+October 22, 2026, 14:02 CEST: Xcode MCP `RunAllTests`, Pasta scheme and test plan, My Mac destination: **17 passed, 0 failed, 0 skipped**. App and test targets built successfully. The result was a local temporary xcresult named `Test-Pasta-2026.10.22_14-02-07-+0200.xcresult`; it is not a published or durable CI artifact.
+
+| Criterion | Historical result | Evidence |
+| --- | --- | --- |
+| English source and fallback language | passed | Project development region, package default localization and both catalogs use `en`; native UI test with French verifies English fallback. |
+| German app translation | passed | All 26 catalog entries translated; UI test checks title, Reset, tagline, permission status, readiness and launch-at-login label in German. |
+| English interface | passed | Equivalent UI test checks English labels and the menu bar Settings item. |
+| Core error localization independent of app catalog | passed | Separate resource catalog with four messages loaded from the package bundle; four parameterized cases check full German/English text and LocalizedError integration. |
+| Dynamic status and error localization | passed | LocalizedStringResource status selection; localized shortcut validation and interpolated login error; catalog checks confirm translations and matching placeholders. |
+| Previous core behavior preserved | passed | All ten earlier core cases still pass. |
+
+UI tests open Settings through the menu bar if the window does not appear automatically. The outstanding real-login check below remained outside the localization package.
+
+## Historical functional acceptance
+
+Environment on October 22, 2026: macOS 27.0.1 (26A434), Apple Silicon, Xcode 27.1 (27A9275). The native project was created through Xcode MCP for macOS only. Two package references were added directly with user authorization because the MCP server did not offer the operation. App/UI test build and full test run succeeded: **11 passed, 0 failed, 0 skipped**, app/test source commit `6aa583a`.
+
+Xcode MCP `RunAllTests`, Pasta scheme and test plan, My Mac, 13:18 CEST: nine Swift Testing tests with ten cases and one native XCTest UI test. Historical local evidence: `.build/verification/xcode-tests-native.json`; temporary result name `Test-Pasta-2026.10.22_13-18-21-+0200.xcresult`. These ignored local artifacts are not included in the repository.
+
+| Criterion | Historical result | Evidence |
+| --- | --- | --- |
+| Hold Command → Space → 4 → release Command | passed | Final Xcode bundle opened history through the global shortcut; focused identifier SpotlightSearchField and static clipboard placeholder observed without reading clipboard contents. Core test checks event order. |
+| Skip Space when Spotlight is already focused | passed | Repeated action leaves history focused (`final-e2e-realistic-default.txt`); parameterized core test checks omission of Space. |
+| Never send 4 without confirmed focus; one-second timeout | passed | Initial real attempt stopped with a focus error; deterministic core test confirms exact timeout. |
+| Missing permission prevents input | passed | Core cases cover missing and revoked permissions while waiting; app integration checks real process permission. |
+| Command released after errors | passed | Focus-timeout and event-creation-failure core cases. |
+| Overlapping requests ignored | passed | Suspended-first-request test confirms `ignoredWhileRunning` and one sequence. Five real rapid shortcuts leave history open. |
+| Open from different apps | passed | After renewed permission and normal restart, final bundle showed allowed/ready status. Three Finder-focused actions and a combined Finder/Codex run opened history without error. Local records: `final-pasta-finder-three-valid.txt`, `final-e2e-realistic-default.txt`. |
+| Configurable global shortcut survives restart | passed | Recorded ⌃⌥⌘P in the native recorder, restarted the app (PID 40013 → 40421), observed the same shortcut, and opened history from Codex. Restored ⌘⇧V and repeated three Finder actions. Records: `final-recorder-recorded.txt`, `final-recorder-after-restart.txt`, `final-restored-default-finder.txt`. |
+| Explain missing/revoked permissions | passed within stated limits | Final bundle showed missing permission, disabled Open button and explanatory error. Core revocation case passed; manual revocation was not automated. |
+| Launch at login after actual sign-in | not verified | Real checkbox registration was enabled and disabled without error (`final-login-registration-on.txt`, `final-login-registration-off.txt`). No actual sign-out occurred. |
+| SwiftUI interface and lifecycle, no Catalyst/UIKit | passed | MenuBarExtra and Window entry point; no NSWindow/NSHostingController/AppDelegate construction; Debug build passed. |
+| Standard native Xcode project | passed | App, core test and UI targets; macOS-only SDK/platform configuration; no shell build phase; built/tested through MCP. |
+| No reading or storing clipboard contents | passed | Process, focus and UI identifier attributes only; no pasteboard API or AX field values. |
+| README covers use and limits | passed | Requirements, key sequence, system host detail and test instructions documented. |
+
+This functional package was not fully accepted because real launch at login remained unverified. Install at a stable path, enable launch at login, sign out and back in, and verify the menu bar and shortcut manually.
+
+## Historical final native bundle checks
+
+The unchanged Xcode DerivedData Debug bundle was launched normally as a menu bar app. After manually renewing Accessibility permission and a real app restart, permission was effective. The app had no Dock icon (`activationPolicy=1`). Finder and Codex, already-focused Spotlight and five rapid shortcuts were checked. All detailed evidence was stored locally under `.build/verification/`.
+
+The app was left running with default ⌘⇧V, launch at login disabled, Ready status and no action error (`final-native-state.txt`). Settings was visually inspected with no overlapping or clipped text (`final-native-settings-ready.png`). This is a historical state, not a claim about the currently running app.
+
+Test automation needed complete modifier key-up events and fully closed Spotlight before each starting scenario. Escape first returns clipboard history to Spotlight search; a further Escape closes it. Earlier focus failures with incomplete modifier release are not reliable product failures. The corrected default test and three Finder runs passed. One custom-shortcut Finder run with trailing synthetic modifier releases remains unexplained and is not counted as success; actual recording, restart and opening from Codex establish the custom shortcut behavior. Product code was not changed for these checks.
+
+## Earlier bundle checks before native project migration
+
+An earlier local app bundle showed a menu bar without Dock icon, an explanatory missing-permission error, Ready status after manual approval, recorded ⌃⌥⌘P surviving a real restart (PID 36168 → 36345), and a reset to ⌘⇧V. Finder and five rapid shortcuts showed SpotlightSearchField and the static clipboard placeholder. Opening from Codex was not reliably established at that stage and was rechecked with the final native bundle.
+
+Local historical records: `.build/verification/e2e-custom.txt`, `restarted-shortcut.txt`, `reset-default.txt`, `settings-no-permission.png`, `settings-ready.png`. They do not establish acceptance of a later build.
