@@ -75,6 +75,7 @@ struct SettingsView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                 Spacer()
+                Button("Quit Pasta") { MacApplication.quit() }
                 Button("Open Clipboard") { model.openHistory() }
                     .disabled(!model.permissionGranted || model.isOpening)
             }
