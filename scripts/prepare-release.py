@@ -142,6 +142,7 @@ def prepare(version: str) -> None:
 
 if __name__ == '__main__':
     try:
+        require(sys.version_info >= (3, 12), 'Release packaging requires Python 3.12 or later.')
         require(len(sys.argv) == 2, 'Usage: python3 scripts/prepare-release.py X.Y.Z')
         prepare(sys.argv[1])
     except (RuntimeError, subprocess.CalledProcessError) as error:
