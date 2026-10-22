@@ -15,17 +15,23 @@ Pasta liest oder speichert keine Zwischenablageinhalte, überwacht keine Kopierv
 
 ## Entwicklungsstand
 
-Der native Kern und ein Machbarkeitstest sind implementiert. Menüleiste und Einstellungen folgen nach dem erfolgreichen Systemtest. Die aktuelle Abnahme mit Belegen und offenen Prüfungen steht in [docs/abnahme.md](docs/abnahme.md).
+Menüleiste, Einstellungen und App-Lebenszyklus sind mit SwiftUI implementiert, ohne Mac Catalyst, UIKit oder eigene AppKit-Fenster/-Delegates. Kleine AppKit-Aufrufe werden für macOS-Dienste wie Aktivieren, Verbergen, Beenden und Öffnen der Systemeinstellungen verwendet. Der native Tastaturkern bleibt als eigenes Swift-Paket unabhängig von der Oberfläche prüfbar. Die aktuelle Abnahme mit Belegen und offenen Prüfungen steht in [docs/abnahme.md](docs/abnahme.md).
 
 ## Bauen und prüfen
 
-Swift 6.2+ und das macOS-27-SDK werden benötigt. Xcode oder die passenden Command Line Tools genügen. Es wird kein generiertes Xcode-Projekt benötigt.
+Für die App wird **Xcode 27 oder neuer** benötigt. Einmal starten und die Einrichtung abschließen. Falls Xcode nicht als aktive Entwicklerumgebung eingestellt ist, kann `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` vorangestellt werden. Die Command Line Tools allein enthalten die benötigten SwiftUI-Makro-Erweiterungen nicht. Für die isolierten Kerntests und `PastaProbe` genügen die Command Line Tools mit Swift 6.2+ und macOS-27-SDK.
 
 ```sh
 ./scripts/test.sh
+./scripts/build-app.sh
+open dist/Pasta.app
 swift run --build-system native PastaProbe
 swift run --build-system native PastaProbe --open
 ```
+
+Das Build-Skript erstellt `dist/Pasta.app` mit einer lokalen Ad-hoc-Signatur. Für die Nutzung die App nach `/Applications` kopieren und **von dort starten**, bevor Rechte erteilt oder Autostart aktiviert werden. Die lokale Signatur ist keine Developer-ID-Signatur und keine Notarisierung. Veröffentlichung ist nicht Teil dieses Arbeitspakets. Ein neuer Build kann eine erneute Rechtevergabe und Autostart-Registrierung erfordern.
+
+Pasta zeigt beim ersten Start die Einstellungen. Klicke auf **Berechtigung erteilen …** und aktiviere Pasta in den Bedienungshilfen. Danach lässt sich die Historie mit dem Shortcut oder über das Menüleistensymbol öffnen. Im Shortcut-Feld kann eine andere Kombination aufgezeichnet, gelöscht oder auf ⌘⇧V zurückgesetzt werden. ⌘Leertaste und ⌘4 sind für die interne Sequenz reserviert. **Beim Anmelden starten** ist standardmäßig ausgeschaltet und verwendet die Anmeldeobjekte von macOS.
 
 `PastaProbe` zeigt ohne `--open` nur Berechtigung und Fokusstatus an. Mit `--open` führt es die echte Tastensequenz aus. Es muss im angemeldeten Desktop laufen und benötigt die entsprechenden Rechte des startenden Terminals. Es liest keine Zwischenablageinhalte.
 
