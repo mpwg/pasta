@@ -32,6 +32,8 @@ Das Projekt verwendet eine lokale Ad-hoc-Signatur. Für die dauerhafte Nutzung d
 
 Pasta zeigt beim ersten Start die Einstellungen. Klicke auf **Berechtigung erteilen …** und aktiviere Pasta in den Bedienungshilfen. Danach lässt sich die Historie mit dem Shortcut oder über das Menüleistensymbol öffnen. Im Shortcut-Feld kann eine andere Kombination aufgezeichnet, gelöscht oder auf ⌘⇧V zurückgesetzt werden. ⌘Leertaste und ⌘4 sind für die interne Sequenz reserviert. **Beim Anmelden starten** ist standardmäßig ausgeschaltet und verwendet die Anmeldeobjekte von macOS.
 
+Zeigt ein neuer lokaler Build trotz Freigabe weiterhin „Berechtigung fehlt“, entferne den bisherigen Pasta-Eintrag aus den Bedienungshilfen und füge das tatsächlich gestartete App-Bundle erneut hinzu. Beende und starte Pasta anschließend neu. Beim aktuellen Xcode-Build wurde die Freigabe danach mit dem Status „Bereit“ bestätigt.
+
 Unter macOS 27 kann Spotlight durch den Systemprozess `com.apple.campo` in `/System/Applications/Siri AI.app` bereitgestellt werden. Pasta erkennt dort zusätzlich die Kennung `SpotlightSearchField`, um Spotlight von anderen Siri-Oberflächen zu unterscheiden. Bei deaktivierter Campo-Systemfunktion wird der klassische Spotlight-Systemprozess erkannt. Diese Betriebssystemdetails müssen bei späteren macOS-Versionen erneut geprüft werden.
 
 Grundlage: [Apple: Zwischenablagehistorie in Spotlight durchsuchen](https://support.apple.com/en-za/guide/mac-help/mchl40d5b86b/mac).
