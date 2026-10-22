@@ -50,7 +50,7 @@ Install **Xcode 27 or later**, launch it once, and finish setup. Command Line To
 2. Select the shared **Pasta** scheme and **My Mac** destination.
 3. Use **⌘R** to build and run, or **⌘U** for core and native UI tests.
 
-The project uses an ad hoc signature with no development team. Xcode resolves the local `Packages/PastaCore` package and KeyboardShortcuts, pinned to 3.1.0. No custom Xcode build phases are required. The `--show-settings` launch argument opens Settings without bypassing permissions or changing preferences.
+The project uses an ad hoc signature with no development team. Xcode resolves the local `Packages/PastaCore` package and KeyboardShortcuts, pinned in the Xcode project and `Package.resolved`. No custom Xcode build phases are required. The `--show-settings` launch argument opens Settings without bypassing permissions or changing preferences.
 
 For the same core checks as CI:
 
@@ -70,6 +70,10 @@ Native UI tests use XCTest; core tests use Swift Testing and send no real keyboa
 - The distributed app is not sandboxed; its keyboard automation requires Accessibility access.
 
 The editable icon source is `Pasta/AppIcon.icon`; see [icon documentation](docs/app-icon.md). macOS clipboard history is described in [Apple's guide](https://support.apple.com/en-za/guide/mac-help/mchl40d5b86b/mac).
+
+## Dependency updates
+
+Renovate opens reviewable update PRs for GitHub Actions and Swift dependencies, including Xcode package requirements and resolved commit pins. Actions use readable major-version tags. Updates are not merged automatically. See [dependency maintenance](docs/dependencies.md).
 
 ## License
 

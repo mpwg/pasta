@@ -1,0 +1,53 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "Europe/Vienna",
+  "branchPrefix": "codex/renovate/",
+  "dependencyDashboard": true,
+  "automerge": false,
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 3,
+  "packageRules": [
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "pinDigests": false
+    },
+    {
+      "matchManagers": [
+        "swift",
+        "custom.regex"
+      ],
+      "groupName": "Swift packages"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Exact GitHub Swift packages declared in Xcode project files",
+      "managerFilePatterns": [
+        "/\\.xcodeproj/project\\.pbxproj$/"
+      ],
+      "matchStrings": [
+        "repositoryURL = \"https://github\\.com/(?<depName>[^\"\\s]+?)(?:\\.git)?\";\\s*requirement = \\{\\s*kind = exactVersion;\\s*version = (?<currentValue>[^;\\s]+);"
+      ],
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "Keep resolved Swift package versions and exact commit revisions in the same update PR",
+      "managerFilePatterns": [
+        "/(^|/)Package\\.resolved$/"
+      ],
+      "matchStrings": [
+        "\"location\"\\s*:\\s*\"https://github\\.com/(?<depName>[^\"\\s]+?)(?:\\.git)?\",\\s*\"state\"\\s*:\\s*\\{\\s*\"revision\"\\s*:\\s*\"(?<currentDigest>[a-f0-9]{40})\",\\s*\"version\"\\s*:\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "semver"
+    }
+  ]
+}
