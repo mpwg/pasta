@@ -1,4 +1,6 @@
 // swift-tools-version: 6.2
+// SPDX-FileCopyrightText: 2026 Matthias Wallner-Géhri
+// SPDX-License-Identifier: GPL-3.0-or-later
 import PackageDescription
 
 let concurrency: [SwiftSetting] = [

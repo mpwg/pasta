@@ -1,43 +1,78 @@
+<!--
+SPDX-FileCopyrightText: 2026 Matthias Wallner-Géhri
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 # Pasta
 
-Eine kleine native Menüleisten-App für macOS 27+. Ein frei wählbarer globaler Shortcut (standardmäßig **⌘⇧V**) öffnet die integrierte Zwischenablagehistorie von macOS.
+A small native menu bar app for **macOS 27 and later**. Press **⌘⇧V**, or choose your own global shortcut, to open the clipboard history built into macOS Spotlight.
 
-Das App-Icon mit Farfalle und Zwischenablage liegt als editierbare Icon-Composer-Datei unter `Pasta/AppIcon.icon` vor. [Vorschau, Bearbeitung und Prüfung](docs/app-icon.md).
+![Pasta icon](docs/images/pasta-icon.png)
 
-Die Ausgangs- und Rückfallsprache ist **Englisch**, die erste Übersetzung **Deutsch**. Pasta folgt der in macOS gewählten App-Sprache. Menüs, Einstellungen, Statusanzeigen, Shortcut-Validierung und Fehlermeldungen sind lokalisiert. Die App verwendet `Pasta/Localizable.xcstrings`; PastaCore hat einen eigenen Katalog unter `Packages/PastaCore/Sources/PastaCore/Resources/Localizable.xcstrings` und lädt seine Meldungen aus dem Paket-Bundle.
+Pasta uses SwiftUI, follows your macOS app language, and includes English and German. English is the fallback language. The keyboard action lives in a separate, testable Swift package.
 
-Pasta hält synthetisch ⌘ gedrückt, drückt und löst die Leertaste, wartet auf den bestätigten Spotlight-Fokus und drückt anschließend 4. Zum Schluss wird ⌘ losgelassen, auch bei einem Fehler. Bei bereits fokussiertem Spotlight entfällt die Leertaste. Der Start erfolgt beim Loslassen des eigenen Shortcuts; gehaltene physische Sondertasten werden bis zu einer Sekunde abgewartet. Weitere Aufrufe während der Sequenz werden ignoriert.
+## Requirements
 
-## Voraussetzungen
+- An Apple Silicon Mac running macOS 27 or later for the distributed app.
+- **⌘Space** configured to open Spotlight, with macOS clipboard history enabled.
+- Accessibility permission for Pasta in **System Settings → Privacy & Security → Accessibility**.
+- An available global shortcut: other apps may already use ⌘⇧V.
 
-- macOS 27 oder neuer.
-- **⌘Leertaste** öffnet Spotlight. Die Zwischenablagehistorie muss in macOS aktiviert sein.
-- Bedienungshilfen-Berechtigung für Pasta unter **Systemeinstellungen → Datenschutz & Sicherheit → Bedienungshilfen**.
-- Andere Programme können ⌘⇧V ebenfalls verwenden. Wähle bei Bedarf einen anderen Pasta-Shortcut.
+## Install
 
-Pasta liest oder speichert keine Zwischenablageinhalte, überwacht keine Kopiervorgänge und benötigt kein Netzwerk zur Laufzeit. Sie prüft lediglich den Systemprozess und den Tastaturfokus. ⌘4 wird ausschließlich an den bestätigten Spotlight-Prozess adressiert. Kann der Fokus innerhalb einer Sekunde nicht bestätigt werden, wird abgebrochen.
+Download an available ZIP from [GitHub Releases](https://github.com/mpwg/pasta/releases), extract it, move **Pasta.app** to `/Applications`, and start it from there before granting permissions or enabling launch at login. Downloads appear only after a maintainer publishes a prepared release.
 
-## Entwicklungsstand
+**Pasta is ad hoc signed. It has no Developer ID signature and is not notarized by Apple.** macOS may block a downloaded copy. After attempting to open it, use **System Settings → Privacy & Security → Open Anyway**, if offered, and confirm only if you trust this download. See [Apple's instructions](https://support.apple.com/en-us/102445). The published SHA-256 checksums let you check download integrity; they do not replace a Developer ID signature. No paid Apple Developer membership is required to build Pasta.
 
-Menüleiste, Einstellungen und App-Lebenszyklus sind mit SwiftUI implementiert, ohne Mac Catalyst, UIKit oder eigene AppKit-Fenster/-Delegates. Kleine AppKit-Aufrufe werden für macOS-Dienste wie Aktivieren, Verbergen, Beenden und Öffnen der Systemeinstellungen verwendet. Der native Tastaturkern bleibt als eigenes Swift-Paket unabhängig von der Oberfläche prüfbar. Die aktuelle Abnahme mit Belegen und offenen Prüfungen steht in [docs/abnahme.md](docs/abnahme.md).
+The app has no automatic updater. Quit Pasta, replace the installed app with a newer download, and reopen it. A changed ad hoc signature can require granting Accessibility permission and registering launch at login again. If permission still appears missing, remove the old Pasta entry from Accessibility, add the installed app again, then quit and reopen Pasta.
 
-## In Xcode bauen und prüfen
+### Existing local builds
 
-Benötigt wird **Xcode 27 oder neuer**. Einmal starten und die Einrichtung abschließen. Die Command Line Tools allein enthalten die benötigten SwiftUI-Makro-Erweiterungen nicht.
+The public bundle identifier is **eu.mpwg.Pasta**. Older development builds used `local.pasta.Pasta`. This is an identity change: shortcuts, first-run settings, permissions, and login registrations are not migrated automatically. Disable launch at login in the old app and quit it before switching. Configure the new copy and grant its permissions separately.
 
-1. **Pasta.xcodeproj** öffnen.
-2. Das Scheme **Pasta** und das Ziel **My Mac** wählen.
-3. Mit **⌘R** die native App bauen und starten.
-4. Mit **⌘U** die Kerntests und den nativen Oberflächentest ausführen.
+## Use
 
-Es gibt keine manuellen Build-Skripte oder Shell-Build-Phasen. Xcode verwaltet das App-Bundle und die Paketabhängigkeiten: das lokale Paket `Packages/PastaCore` und KeyboardShortcuts, fest auf Version 3.1.0 gesetzt. `PastaTests` enthält Swift-Testing-Tests für den Kern im regulären App-Testhost; die Tests selbst bedienen keine Oberfläche und senden keine echten Tastendrücke. `PastaUITests` verwendet das für native Oberflächenautomation erforderliche XCTest. Der Startparameter `--show-settings` öffnet die Einstellungen unabhängig vom bisherigen Einrichtungsstand, ohne Rechte oder Nutzereinstellungen zu umgehen.
+On first launch, Pasta opens Settings. Click **Grant Permission …**, enable Pasta in Accessibility, and reopen the app if macOS requests it. Use your shortcut or **Open Clipboard History** in the menu bar menu.
 
-Das Projekt verwendet eine lokale Ad-hoc-Signatur. Für die dauerhafte Nutzung die gebaute **Pasta.app** aus Xcodes Produktgruppe nach `/Applications` kopieren und **von dort starten**, bevor Rechte erteilt oder Autostart aktiviert werden. Die lokale Signatur ist keine Developer-ID-Signatur und keine Notarisierung. Veröffentlichung ist nicht Teil dieses Arbeitspakets. Ein neuer Build kann eine erneute Rechtevergabe und Autostart-Registrierung erfordern.
+Record a different shortcut in Settings, clear it, or use **Reset** to restore ⌘⇧V. Pasta reserves ⌘Space and ⌘4 for its internal action. **Launch at Login** is off by default and uses macOS Login Items.
 
-Pasta zeigt beim ersten Start die Einstellungen. Klicke auf **Berechtigung erteilen …** und aktiviere Pasta in den Bedienungshilfen. Danach lässt sich die Historie mit dem Shortcut oder über das Menüleistensymbol öffnen. Im Shortcut-Feld kann eine andere Kombination aufgezeichnet, gelöscht oder auf ⌘⇧V zurückgesetzt werden. ⌘Leertaste und ⌘4 sind für die interne Sequenz reserviert. **Beim Anmelden starten** ist standardmäßig ausgeschaltet und verwendet die Anmeldeobjekte von macOS.
+## Privacy and behavior
 
-Zeigt ein neuer lokaler Build trotz Freigabe weiterhin „Berechtigung fehlt“, entferne den bisherigen Pasta-Eintrag aus den Bedienungshilfen und füge das tatsächlich gestartete App-Bundle erneut hinzu. Beende und starte Pasta anschließend neu. Beim aktuellen Xcode-Build wurde die Freigabe danach mit dem Status „Bereit“ bestätigt.
+Pasta does not read or store clipboard contents, monitor copies, send telemetry, or make network requests at runtime. Shortcut and first-run preferences are stored locally. macOS owns the clipboard history and its contents; Pasta does not change macOS history retention.
 
-Unter macOS 27 kann Spotlight durch den Systemprozess `com.apple.campo` in `/System/Applications/Siri AI.app` bereitgestellt werden. Pasta erkennt dort zusätzlich die Kennung `SpotlightSearchField`, um Spotlight von anderen Siri-Oberflächen zu unterscheiden. Bei deaktivierter Campo-Systemfunktion wird der klassische Spotlight-Systemprozess erkannt. Diese Betriebssystemdetails müssen bei späteren macOS-Versionen erneut geprüft werden.
+Accessibility access lets Pasta check the focused system application and UI identifiers and send keyboard events. Pasta holds ⌘, presses and releases Space, waits for confirmed Spotlight focus, presses 4, then releases ⌘. It skips Space if Spotlight already has focus. The 4 key is addressed directly to the verified Spotlight process. If focus cannot be confirmed within one second, the action stops. Physical modifier keys must be released; overlapping requests are ignored.
 
-Grundlage: [Apple: Zwischenablagehistorie in Spotlight durchsuchen](https://support.apple.com/en-za/guide/mac-help/mchl40d5b86b/mac).
+## Build and test
+
+Install **Xcode 27 or later**, launch it once, and finish setup. Command Line Tools alone do not contain the required SwiftUI macro extensions.
+
+1. Open `Pasta.xcodeproj`.
+2. Select the shared **Pasta** scheme and **My Mac** destination.
+3. Use **⌘R** to build and run, or **⌘U** for core and native UI tests.
+
+The project uses an ad hoc signature with no development team. Xcode resolves the local `Packages/PastaCore` package and KeyboardShortcuts, pinned to 3.1.0. No custom Xcode build phases are required. The `--show-settings` launch argument opens Settings without bypassing permissions or changing preferences.
+
+For the same core checks as CI:
+
+```sh
+python3 scripts/check-project.py
+xcodebuild -project Pasta.xcodeproj -scheme Pasta -destination 'platform=macOS,arch=arm64' -onlyUsePackageVersionsFromResolvedFile build-for-testing
+xcodebuild -project Pasta.xcodeproj -scheme Pasta -destination 'platform=macOS,arch=arm64' -onlyUsePackageVersionsFromResolvedFile -only-testing:PastaTests test-without-building
+```
+
+Native UI tests use XCTest; core tests use Swift Testing and send no real keyboard events. See [contributing](CONTRIBUTING.md), [release preparation](docs/releasing.md), and [acceptance evidence](docs/acceptance.md).
+
+## Known limitations
+
+- Distribution targets Apple Silicon only. Intel support is not verified.
+- Download quarantine handling and real launch at login after signing out and back in still need manual acceptance on the public build.
+- macOS implementation details may change. Pasta recognizes the classic Spotlight process and the macOS 27 Campo host only when its focused UI is the Spotlight search field.
+- The distributed app is not sandboxed; its keyboard automation requires Accessibility access.
+
+The editable icon source is `Pasta/AppIcon.icon`; see [icon documentation](docs/app-icon.md). macOS clipboard history is described in [Apple's guide](https://support.apple.com/en-za/guide/mac-help/mchl40d5b86b/mac).
+
+## License
+
+Copyright © 2026 Matthias Wallner-Géhri. Pasta's original code, documentation, and supplied assets are offered under the **GNU General Public License, version 3 or any later version** (`GPL-3.0-or-later`), without warranty. See [license.md](license.md). The icon uses AI-generated artwork; its provenance is documented separately.
+
+KeyboardShortcuts retains its MIT license; see [third-party notices](THIRD_PARTY_NOTICES.md). Release downloads include license notices and the corresponding source archive for the exact build commit.

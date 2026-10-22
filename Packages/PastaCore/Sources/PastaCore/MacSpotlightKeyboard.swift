@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Matthias Wallner-Géhri
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import AppKit
 import ApplicationServices
 import Carbon.HIToolbox

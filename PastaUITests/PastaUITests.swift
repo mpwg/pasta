@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Matthias Wallner-Géhri
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import XCTest
 
 // Native macOS UI automation remains XCTest; the core uses Swift Testing.
