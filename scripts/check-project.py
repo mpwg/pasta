@@ -3,6 +3,7 @@
 
 from pathlib import Path
 import json
+import hashlib
 import re
 import subprocess
 import sys
@@ -60,9 +61,9 @@ def check() -> list[str]:
     for name in ('license.md', 'THIRD_PARTY_NOTICES.md'):
         if (ROOT / name).read_bytes() != (ROOT / 'Pasta' / name).read_bytes():
             errors.append(f'{name}: root and bundled copies differ')
-    license_text = (ROOT / 'license.md').read_text()
-    if 'GNU GENERAL PUBLIC LICENSE' not in license_text or 'END OF TERMS AND CONDITIONS' not in license_text:
-        errors.append('GPL license text is incomplete')
+    license_hash = hashlib.sha256((ROOT / 'license.md').read_bytes()).hexdigest()
+    if license_hash != '3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986':
+        errors.append('GPL license text differs from the complete original GNU text')
     package = (ROOT / 'Packages/PastaCore/Package.swift').read_text()
     if not package.startswith('// swift-tools-version:'):
         errors.append('Swift tools version must be first')
