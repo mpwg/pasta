@@ -5,6 +5,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 # Pasta acceptance
 
+## October 23, 2026 — bounded code audit
+
+See the [complete code audit and correction evidence](audit-2026-10-23.md). Current source, build, isolated tooling and core-test evidence supersedes historical automated results only within those categories. No new real-keyboard, UI, quarantined-installation or real-login acceptance is claimed. The approved Markdown GPL is synchronized into the app bundle.
+
 ## GitHub preparation — current evidence
 
 The app and test source was verified locally on October 22, 2026 with macOS 27.0.1, Apple Silicon and Xcode 27.1. Later documentation/workflow-only edits do not replace these native results. Pasta 0.1.0 has been prepared as a draft from commit d119a3a; no public release has been published.
