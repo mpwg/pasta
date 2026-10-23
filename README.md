@@ -56,6 +56,7 @@ For the same core checks as CI:
 
 ```sh
 python3 scripts/check-project.py
+python3 -m unittest discover -s scripts/tests -v
 xcodebuild -project Pasta.xcodeproj -scheme Pasta -destination 'platform=macOS,arch=arm64' -onlyUsePackageVersionsFromResolvedFile build-for-testing
 xcodebuild -project Pasta.xcodeproj -scheme Pasta -destination 'platform=macOS,arch=arm64' -onlyUsePackageVersionsFromResolvedFile -only-testing:PastaTests test-without-building
 ```

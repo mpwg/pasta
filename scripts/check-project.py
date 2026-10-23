@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Matthias Wallner-Géhri
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Check tracked file licensing, structured resources, and release invariants."""
 
 from pathlib import Path
@@ -14,28 +16,46 @@ COPYRIGHT = 'SPDX-FileCopyrightText: 2026 Matthias Wallner-Géhri'
 LICENSE = 'SPDX-License-Identifier: GPL-3.0-or-later'
 
 
+def has_declaration(header: str, declaration: str) -> bool:
+    return any(re.fullmatch(r'(?:#|//|/\*|\*)?\s*' + re.escape(declaration) + r'\s*(?:\*/)?', line.strip())
+               for line in header.splitlines())
+
+
 def check() -> list[str]:
     errors = []
+
+    def required_bytes(name: str) -> bytes | None:
+        try:
+            return (ROOT / name).read_bytes()
+        except OSError as error:
+            errors.append(f'{name}: cannot read required file: {error.strerror}')
+            return None
+
     paths = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0')
     for name in filter(None, paths):
         path = ROOT / name
         if not path.exists():
             errors.append(f'{name}: tracked file missing')
             continue
-        if name in {'license.md', 'Pasta/license.md'} or name.endswith('.license'):
+        if name in {'license.md', 'Pasta/license.md'}:
             continue
         try:
             content = path.read_text()
         except UnicodeDecodeError:
             content = ''
+        except OSError as error:
+            errors.append(f'{name}: cannot read tracked file: {error.strerror}')
+            continue
         header = content[:1200]
         sidecar = Path(str(path) + '.license')
         if sidecar.exists():
-            header = sidecar.read_text()
-        if COPYRIGHT not in header or LICENSE not in header:
+            try:
+                header = sidecar.read_text()
+            except (OSError, UnicodeDecodeError) as error:
+                errors.append(f'{name}: cannot read license sidecar: {error}')
+                header = ''
+        if not has_declaration(header, COPYRIGHT) or not has_declaration(header, LICENSE):
             errors.append(f'{name}: missing SPDX copyright or license')
-        if path.suffix == '.license':
-            continue
         try:
             if path.suffix in {'.json', '.xcstrings'} or path.name == 'Package.resolved':
                 data = json.loads(content)
@@ -56,16 +76,18 @@ def check() -> list[str]:
                             errors.append(f'{name}: translation placeholders differ for {key!r}')
             if path.suffix in {'.xcscheme', '.xcworkspacedata'}:
                 ET.fromstring(content)
-        except (ValueError, ET.ParseError, KeyError) as error:
+        except (ValueError, ET.ParseError, KeyError, TypeError, AttributeError) as error:
             errors.append(f'{name}: {error}')
     for name in ('license.md', 'THIRD_PARTY_NOTICES.md'):
-        if (ROOT / name).read_bytes() != (ROOT / 'Pasta' / name).read_bytes():
+        original = required_bytes(name)
+        bundled = required_bytes(f'Pasta/{name}')
+        if original is not None and bundled is not None and original != bundled:
             errors.append(f'{name}: root and bundled copies differ')
-    license_hash = hashlib.sha256((ROOT / 'license.md').read_bytes()).hexdigest()
-    if license_hash != 'cc5470feed66192387f06ae93aed0bd4fefae5a5fd7c1e54a4acf4ea64f1028b':
+    license_text = required_bytes('license.md')
+    if license_text is not None and hashlib.sha256(license_text).hexdigest() != 'cc5470feed66192387f06ae93aed0bd4fefae5a5fd7c1e54a4acf4ea64f1028b':
         errors.append('GPL license text differs from the approved Markdown text')
-    package = (ROOT / 'Packages/PastaCore/Package.swift').read_text()
-    if not package.startswith('// swift-tools-version:'):
+    package = required_bytes('Packages/PastaCore/Package.swift')
+    if package is not None and not package.startswith(b'// swift-tools-version:'):
         errors.append('Swift tools version must be first')
     return errors
 

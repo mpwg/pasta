@@ -25,6 +25,8 @@ jobs:
           python-version: '3.13'
       - name: Check project and license coverage
         run: python3 scripts/check-project.py
+      - name: Test project checks and release packaging in isolation
+        run: python3 -m unittest discover -s scripts/tests -v
       - name: Build app and all test targets
         run: >-
           xcodebuild -project Pasta.xcodeproj -scheme Pasta
