@@ -5,6 +5,31 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 # Pasta acceptance
 
+## October 23, 2026 — App Sandbox transition
+
+Current source enables App Sandbox in Debug and Release and removes user-selected-file access. `Pasta.entitlements` explicitly contains only `com.apple.security.app-sandbox=true`. Base entitlement injection follows `ENABLE_TESTABILITY`: a normal Debug build also permits debugger attachment; Release does not. The existing keyboard algorithm, shortcut integration and login service implementation are unchanged. The earlier unsandboxed draft assets and historical functional checks below do not establish sandboxed functionality.
+
+Environment: Apple Silicon, macOS 27.0.1 (`26A434`), Xcode 27.1 (`27A9275`). Status labels: **fulfilled**, **open**, **not verifiable**. Local evidence paths below are ignored build artifacts, not published CI results.
+
+| Criterion | Status | Current evidence / remaining step |
+| --- | --- | --- |
+| Sandbox enabled in both app configurations | fulfilled | Updated through Xcode MCP. Normal Debug and Release builds pass without command-line sandbox overrides. Logs: `.build/sandbox-debug-build.log`, `.build/sandbox-release-build.log`. |
+| Minimal ordinary app entitlements and valid signatures | fulfilled | `codesign --verify --deep --strict` passes for both bundles. Exact parsed entitlements: Debug = sandbox + debugger attachment; Release = sandbox only. No file, network, Apple Events or temporary-exception entitlements. `.build/sandbox-signature-evidence.json`. |
+| Core and native adapter regression checks | fulfilled | `.build/sandbox-core-final.xcresult`: 15 test functions, 21 cases, zero failures/skips. Posting is intercepted; tests send no session input. |
+| Native settings UI | fulfilled | Three XCTest UI cases pass: German, English and fallback. `.build/sandbox-ui.xcresult`. Existing tests check settings, shortcut recorder, permission status and login control. Xcode may add test-only sandbox exceptions, so these tests do not prove ordinary app automation works. |
+| Ordinary sandboxed app launch | fulfilled | Normal Xcode RunProject opens Settings. Actual normal app signature has sandbox + debugger attachment and no test exceptions. `NSHomeDirectory()` resolves to the app container; `hasShownSettings=true`. `.build/sandbox-runtime-evidence.txt`. |
+| README and release guidance | fulfilled | README describes the experimental transition, container preferences, unchanged action and unsupported Accessibility dependency. Release guidance distinguishes earlier draft assets and App Store readiness. |
+| Permission-gated action | not verifiable | The normal process reports `AXIsProcessTrusted=false` and `CGPreflightPostEventAccess=false`. This is not evidence of a sandbox-only denial. Positive Spotlight tests require user-granted permissions. |
+| Container preference persistence through restart | fulfilled | A temporary shortcut preference was written inside the normal sandboxed process and read back after terminating and relaunching it; `hasShownSettings=true` also persisted. This exercises storage, not the recorder or global shortcut dispatch. The original shortcut was restored. `.build/sandbox-runtime-evidence.txt`. |
+| Actual shortcut recording and global dispatch | open | Existing UI tests establish the recorder's presence only; the storage probe does not establish recording or activation. Verify an actual recording and restart, then restore the original shortcut. |
+| Menu/global shortcut with closed/already-focused Spotlight | not verifiable | Permission-dependent positive scenarios remain untested. Native Device Interaction does not support macOS; no TCC permissions were changed or bypassed. |
+| Launch-at-login registration | fulfilled | Called `SMAppService.mainApp.register()` in the normal sandboxed process: success, `.notFound` → `.enabled`. After app restart, `unregister()` succeeded: `.notRegistered`, restoring autostart off. A service record now exists; this does not establish launch after real sign-in. `.build/sandbox-runtime-evidence.txt`. |
+| Launch at login after real sign-out/sign-in | not verifiable | Requires installation at a stable path, registration and a user-performed sign-out/sign-in. No session termination was attempted. |
+
+The **configuration transition is implemented**, but the app is **not fully functionally accepted**. Apple explicitly lists Accessibility API use as [incompatible with App Sandbox](https://developer.apple.com/documentation/security/protecting-user-data-with-app-sandbox); [Apple DTS confirms that user approval does not make these APIs supported in sandboxed apps](https://developer.apple.com/forums/thread/794253). Preserve the permission/focus guards while investigating; do not add undocumented entitlements or bypass helpers. Failure to obtain permission must not be presented as proof that a sandboxed positive path was tested.
+
+Test builds can carry Xcode-injected temporary exceptions. Both ordinary Debug and Release bundles were therefore rebuilt and their actual signatures checked separately. AppKit also logged a connection error for `com.apple.linkd.autoShortcut` during the normal launch; the app remained running and that message alone does not establish the cause of a clipboard action failure.
+
 ## October 23, 2026 — bounded code audit
 
 See the [complete code audit and correction evidence](audit-2026-10-23.md). Current source, build, isolated tooling and core-test evidence supersedes historical automated results only within those categories. No new real-keyboard, UI, quarantined-installation or real-login acceptance is claimed. The approved Markdown GPL is synchronized into the app bundle.
