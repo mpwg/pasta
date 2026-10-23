@@ -80,6 +80,12 @@ class ProjectChecks(RepositoryFixture):
                 self.assertTrue(any(f'{name}: cannot read required file:' in error for error in self.check()))
                 path.write_bytes(data)
 
+    def test_non_utf8_sidecar_returns_errors(self):
+        (self.root / 'image.png').write_bytes(b'fixture')
+        (self.root / 'image.png.license').write_bytes(b'\xff')
+        self.git('add', '.')
+        self.assertTrue(any('cannot read license sidecar' in error for error in self.check()))
+
     def test_malformed_catalog_and_mismatched_placeholders(self):
         path = self.root / 'Localizable.xcstrings'
         Path(str(path) + '.license').write_text(f'{checker.COPYRIGHT}\n{checker.LICENSE}\n')

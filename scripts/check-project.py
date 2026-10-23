@@ -43,10 +43,17 @@ def check() -> list[str]:
             content = path.read_text()
         except UnicodeDecodeError:
             content = ''
+        except OSError as error:
+            errors.append(f'{name}: cannot read tracked file: {error.strerror}')
+            continue
         header = content[:1200]
         sidecar = Path(str(path) + '.license')
         if sidecar.exists():
-            header = sidecar.read_text()
+            try:
+                header = sidecar.read_text()
+            except (OSError, UnicodeDecodeError) as error:
+                errors.append(f'{name}: cannot read license sidecar: {error}')
+                header = ''
         if not has_declaration(header, COPYRIGHT) or not has_declaration(header, LICENSE):
             errors.append(f'{name}: missing SPDX copyright or license')
         try:
