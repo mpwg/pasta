@@ -5,7 +5,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 # Dependency maintenance
 
-The hosted Renovate GitHub App has repository access confirmed by the maintainer. `renovate.json` uses the recommended preset and enables a Dependency Dashboard. Updates require review; automerge is disabled. Branches use `codex/renovate/`, with at most three open PRs and two new PRs per hour.
+The hosted Renovate GitHub App has repository access confirmed by the maintainer. `renovate.json` uses the recommended preset and enables a Dependency Dashboard. Updates require review; automerge is disabled. Branches use `codex/renovate/`. Regular updates explicitly allow at most three open PRs and two new PRs per hour; these limits do not rely on inherited defaults. Renovate's [vulnerability alerts](https://docs.renovatebot.com/configuration-options/#vulnerabilityalerts) bypass normal rate limits by default.
 
 ## Coverage
 
