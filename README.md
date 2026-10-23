@@ -62,6 +62,8 @@ xcodebuild -project Pasta.xcodeproj -scheme Pasta -destination 'platform=macOS,a
 
 Native UI tests use XCTest; core tests use Swift Testing and send no real keyboard events. See [contributing](CONTRIBUTING.md), [release preparation](docs/releasing.md), and [acceptance evidence](docs/acceptance.md).
 
+Command-up is prepared before Command-down is posted, so cleanup needs no further event allocation. Native adapter regression tests intercept posting; they verify allocation failures and repeated cleanup without sending input to the session. OS-level event delivery still requires separate manual acceptance.
+
 CodeQL scans Python scripts and GitHub Actions on pull requests, pushes to `main`, and weekly. Swift analysis is currently blocked by CodeQL's Xcode 27/macOS 27 tracing support; see [CodeQL coverage](docs/codeql.md).
 
 The [October 23 code audit](docs/audit-2026-10-23.md) records source coverage, confirmed findings and current verification limits.

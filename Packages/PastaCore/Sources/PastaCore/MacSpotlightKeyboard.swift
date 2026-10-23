@@ -8,9 +8,25 @@ import Carbon.HIToolbox
 @MainActor
 public final class MacSpotlightKeyboard: SpotlightKeyboard {
     private let source = CGEventSource(stateID: .privateState)
-    private var commandIsHeld = false
+    private var commandReleaseEvent: CGEvent?
+    private let makeEvent: (CGEventSource, CGKeyCode, Bool) -> CGEvent?
+    private let postCommandEvent: (CGEvent) -> Void
 
-    public init() {}
+    public convenience init() {
+        self.init(
+            makeEvent: { CGEvent(keyboardEventSource: $0, virtualKey: $1, keyDown: $2) },
+            postCommandEvent: { $0.post(tap: .cgSessionEventTap) }
+        )
+    }
+
+    // Keep native allocation failures testable without posting keyboard input.
+    init(
+        makeEvent: @escaping (CGEventSource, CGKeyCode, Bool) -> CGEvent?,
+        postCommandEvent: @escaping (CGEvent) -> Void
+    ) {
+        self.makeEvent = makeEvent
+        self.postCommandEvent = postCommandEvent
+    }
 
     public var hasPermission: Bool {
         AXIsProcessTrusted() && CGPreflightPostEventAccess()
@@ -24,9 +40,12 @@ public final class MacSpotlightKeyboard: SpotlightKeyboard {
     public var spotlightHasFocus: Bool { focusedSpotlightPID() != nil }
 
     public func holdCommand() throws {
+        guard commandReleaseEvent == nil else { return }
+        // Reserve cleanup before posting any key-down; release must not allocate.
+        let release = try key(CGKeyCode(kVK_Command), down: false, flags: [])
         let event = try key(CGKeyCode(kVK_Command), down: true, flags: .maskCommand)
-        commandIsHeld = true
-        event.post(tap: .cgSessionEventTap)
+        commandReleaseEvent = release
+        postCommandEvent(event)
     }
 
     public func pressSpace() throws {
@@ -47,20 +66,14 @@ public final class MacSpotlightKeyboard: SpotlightKeyboard {
     }
 
     public func releaseCommand() {
-        guard commandIsHeld else { return }
-        commandIsHeld = false
-        guard let event = CGEvent(
-            keyboardEventSource: source,
-            virtualKey: CGKeyCode(kVK_Command),
-            keyDown: false
-        ) else { return }
-        event.flags = []
-        event.post(tap: .cgSessionEventTap)
+        guard let event = commandReleaseEvent else { return }
+        postCommandEvent(event)
+        commandReleaseEvent = nil
     }
 
     private func key(_ code: CGKeyCode, down: Bool, flags: CGEventFlags) throws -> CGEvent {
         guard let source,
-              let event = CGEvent(keyboardEventSource: source, virtualKey: code, keyDown: down)
+              let event = makeEvent(source, code, down)
         else { throw HistoryActionError.eventCreationFailed }
         event.flags = flags
         return event

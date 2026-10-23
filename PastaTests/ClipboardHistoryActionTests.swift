@@ -13,12 +13,15 @@ private final class Keyboard: SpotlightKeyboard {
     var focusesAfterSpace = true
     var events: [String] = []
     var failFour = false
+    var beforeFour: (() -> Void)?
     func holdCommand() throws { events.append("commandDown") }
     func pressSpace() throws {
         events.append("space")
         spotlightHasFocus = focusesAfterSpace
     }
     func pressFourIfSpotlightFocused() throws {
+        beforeFour?()
+        guard hasPermission else { throw HistoryActionError.permissionMissing }
         guard spotlightHasFocus else { throw HistoryActionError.spotlightNotFocused }
         if failFour { throw HistoryActionError.eventCreationFailed }
         events.append("four")
@@ -136,6 +139,43 @@ struct ClipboardHistoryActionTests {
         })
         try await action.open()
         #expect(keyboard.events == ["commandDown", "space", "four", "commandUp"])
+    }
+
+    @Test(arguments: [false, true])
+    func `Final focus and permission loss prevent four and release command`(losePermission: Bool) async {
+        let keyboard = Keyboard()
+        keyboard.beforeFour = {
+            if losePermission { keyboard.hasPermission = false }
+            else { keyboard.spotlightHasFocus = false }
+        }
+        let action = Time().action(keyboard)
+        let error: HistoryActionError = losePermission ? .permissionMissing : .spotlightNotFocused
+        await #expect(throws: error) { try await action.open() }
+        #expect(keyboard.events == ["commandDown", "space", "commandUp"])
+        #expect(!action.isRunning)
+    }
+
+    @Test func `Cancellation before starting sends no events`() async {
+        let keyboard = Keyboard()
+        let action = Time().action(keyboard)
+        let task = Task {
+            withUnsafeCurrentTask { $0?.cancel() }
+            return try await action.open()
+        }
+        await #expect(throws: CancellationError.self) { try await task.value }
+        #expect(keyboard.events.isEmpty)
+        #expect(!action.isRunning)
+    }
+
+    @Test func `Failure permits a later successful request`() async throws {
+        let keyboard = Keyboard()
+        let action = Time().action(keyboard)
+        keyboard.failFour = true
+        await #expect(throws: HistoryActionError.eventCreationFailed) { try await action.open() }
+        keyboard.failFour = false
+        #expect(try await action.open() == .sent)
+        #expect(keyboard.events == ["commandDown", "space", "commandUp", "commandDown", "four", "commandUp"])
+        #expect(!action.isRunning)
     }
 
     @Test func `A second call is ignored while the first is suspended`() async throws {
