@@ -64,6 +64,8 @@ Native UI tests use XCTest; core tests use Swift Testing and send no real keyboa
 
 CodeQL scans Python scripts and GitHub Actions on pull requests, pushes to `main`, and weekly. Swift analysis is currently blocked by CodeQL's Xcode 27/macOS 27 tracing support; see [CodeQL coverage](docs/codeql.md).
 
+The [October 23 code audit](docs/audit-2026-10-23.md) records source coverage, confirmed findings and current verification limits.
+
 ## Known limitations
 
 - Distribution targets Apple Silicon only. Intel support is not verified.
