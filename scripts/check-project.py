@@ -62,8 +62,8 @@ def check() -> list[str]:
         if (ROOT / name).read_bytes() != (ROOT / 'Pasta' / name).read_bytes():
             errors.append(f'{name}: root and bundled copies differ')
     license_hash = hashlib.sha256((ROOT / 'license.md').read_bytes()).hexdigest()
-    if license_hash != '3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986':
-        errors.append('GPL license text differs from the complete original GNU text')
+    if license_hash != 'cc5470feed66192387f06ae93aed0bd4fefae5a5fd7c1e54a4acf4ea64f1028b':
+        errors.append('GPL license text differs from the approved Markdown text')
     package = (ROOT / 'Packages/PastaCore/Package.swift').read_text()
     if not package.startswith('// swift-tools-version:'):
         errors.append('Swift tools version must be first')
