@@ -33,6 +33,8 @@ The source archive contains the complete tracked project at the recorded commit 
 
 ## Compatibility
 
+Current source enables App Sandbox in Debug and Release without user-selected-file access. Earlier draft assets are unsandboxed and do not establish acceptance of new builds. The current Spotlight action uses cross-process Accessibility APIs that Apple does not support in App Sandbox; retain this functional limitation in release notes until the sandboxed action has been verified. Do not describe sandbox enablement alone as App Store readiness. There is no explicit preference migration from earlier unsandboxed builds; verify the shortcut after replacement.
+
 Only Apple Silicon/macOS 27+ downloads are currently prepared. No updater is installed. Ad hoc signatures can change between builds, so permission renewal and login registration may be required after replacement. The `eu.mpwg.Pasta` identity does not migrate preferences or permissions from `local.pasta.Pasta`.
 
 The archive and checksum checks do not establish successful quarantined installation or a real login session. Those require the manual checks above. Retain both source and binary assets for every published version.

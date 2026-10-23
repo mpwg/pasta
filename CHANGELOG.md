@@ -7,6 +7,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 ## Unreleased
 
+- Enable App Sandbox in Debug and Release and remove the unused user-selected-file permission. Spotlight automation remains experimental and requires separate sandboxed runtime acceptance.
 - Prepare public GitHub distribution under GPL-3.0-or-later.
 - Use the `eu.mpwg` bundle identifier prefix. Earlier local preferences, permissions, and login registrations are not migrated.
 - Provide English project documentation while retaining German app localization.

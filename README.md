@@ -11,6 +11,8 @@ A small native menu bar app for **macOS 27 and later**. Press **⌘⇧V**, or ch
 
 Pasta uses SwiftUI, follows your macOS app language, and includes English and German. English is the fallback language. The keyboard action lives in a separate, testable Swift package.
 
+**Current development builds enable App Sandbox in Debug and Release. This is an experimental transition: opening Spotlight clipboard history is not yet accepted under the sandbox.** Apple's [sandbox documentation](https://developer.apple.com/documentation/security/protecting-user-data-with-app-sandbox) excludes the cross-process Accessibility APIs used by the current implementation. Granting Accessibility permission does not remove this sandbox restriction. See [current acceptance](docs/acceptance.md) before replacing a working build. Earlier draft release assets predate this transition.
+
 ## Requirements
 
 - An Apple Silicon Mac running macOS 27 or later for the distributed app.
@@ -32,7 +34,7 @@ The public bundle identifier is **eu.mpwg.Pasta**. Older development builds used
 
 ## Use
 
-On first launch, Pasta opens Settings. Click **Grant Permission …**, enable Pasta in Accessibility, and reopen the app if macOS requests it. Use your shortcut or **Open Clipboard History** in the menu bar menu.
+On first launch, Pasta opens Settings. The interface still offers **Grant Permission …** and **Open Clipboard History**, but the sandboxed build may stop at the permission or Spotlight-focus check. Accessibility approval alone does not establish that the action works in the sandbox; repeated permission resets are not a sandbox workaround.
 
 Record a different shortcut in Settings, clear it, or use **Reset** to restore ⌘⇧V. Pasta reserves ⌘Space and ⌘4 for its internal action. **Launch at Login** is off by default and uses macOS Login Items.
 
@@ -40,7 +42,9 @@ Record a different shortcut in Settings, clear it, or use **Reset** to restore �
 
 Pasta does not read or store clipboard contents, monitor copies, send telemetry, or make network requests at runtime. Shortcut and first-run preferences are stored locally. macOS owns the clipboard history and its contents; Pasta does not change macOS history retention.
 
-Accessibility access lets Pasta check the focused system application and UI identifiers and send keyboard events. Pasta holds ⌘, presses and releases Space, waits for confirmed Spotlight focus, presses 4, then releases ⌘. It skips Space if Spotlight already has focus. The 4 key is addressed directly to the verified Spotlight process. If focus cannot be confirmed within one second, the action stops. Physical modifier keys must be released; overlapping requests are ignored.
+The existing keyboard action attempts to check the focused system application and UI identifiers and send keyboard events. It holds ⌘, presses and releases Space, waits for confirmed Spotlight focus, presses 4, then releases ⌘. It skips Space if Spotlight already has focus. The 4 key is addressed directly to the verified Spotlight process. If focus cannot be confirmed within one second, the action stops. Physical modifier keys must be released; overlapping requests are ignored. This algorithm remains unchanged during the sandbox experiment; its cross-process accesses may be blocked.
+
+Sandboxed preferences use the app's container. No explicit migration from earlier unsandboxed preferences is implemented; verify your shortcut and first-run settings after switching. The app requests no user-selected-file, network, Apple Events or temporary-exception entitlements.
 
 ## Build and test
 
@@ -50,7 +54,7 @@ Install **Xcode 27 or later**, launch it once, and finish setup. Command Line To
 2. Select the shared **Pasta** scheme and **My Mac** destination.
 3. Use **⌘R** to build and run, or **⌘U** for core and native UI tests.
 
-The project uses an ad hoc signature with no development team. Xcode resolves the local `Packages/PastaCore` package and KeyboardShortcuts, pinned in the Xcode project and `Package.resolved`. No custom Xcode build phases are required. The `--show-settings` launch argument opens Settings without bypassing permissions or changing preferences.
+The project uses an ad hoc signature with no development team and enables App Sandbox in both Debug and Release. `Pasta.entitlements` explicitly declares the sandbox; base entitlement injection follows `ENABLE_TESTABILITY`, permitting debugger attachment in Debug while keeping it out of Release. Xcode resolves the local `Packages/PastaCore` package and KeyboardShortcuts, pinned in the Xcode project and `Package.resolved`. No custom Xcode build phases are required. The `--show-settings` launch argument opens Settings without bypassing permissions or changing preferences.
 
 For the same core checks as CI:
 
@@ -74,7 +78,7 @@ The [October 23 code audit](docs/audit-2026-10-23.md) records source coverage, c
 - Distribution targets Apple Silicon only. Intel support is not verified.
 - Download quarantine handling and real launch at login after signing out and back in still need manual acceptance on the public build.
 - macOS implementation details may change. Pasta recognizes the classic Spotlight process and the macOS 27 Campo host only when its focused UI is the Spotlight search field.
-- The distributed app is not sandboxed; its keyboard automation requires Accessibility access.
+- Current builds are sandboxed, but the existing Spotlight automation relies on cross-process Accessibility APIs that Apple does not support in App Sandbox. Successful builds and unit tests do not establish working clipboard-history activation or App Store readiness.
 
 The editable icon source is `Pasta/AppIcon.icon`; see [icon documentation](docs/app-icon.md). macOS clipboard history is described in [Apple's guide](https://support.apple.com/en-za/guide/mac-help/mchl40d5b86b/mac).
 
