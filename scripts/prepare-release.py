@@ -12,6 +12,7 @@ import shutil
 import subprocess
 import sys
 import tarfile
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -71,10 +72,21 @@ def prepare(version: str) -> None:
         require(run('git', 'rev-parse', 'HEAD', cwd=dependency) == revision, 'Dependency revision does not match Package.resolved.')
         require(not run('git', 'status', '--porcelain', cwd=dependency), 'Resolved dependency has local changes.')
         dependencies.append((pin['identity'], dependency, revision))
-    output.mkdir(parents=True)
-    stage = ROOT / '.build' / f'package-{version}'
-    require(not stage.exists(), f'Packaging staging directory already exists: {stage}')
-    stage.mkdir()
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix=f'.pasta-{version}-', dir=output.parent) as temporary:
+        stage = Path(temporary)
+        prepared = stage / 'output'
+        prepared.mkdir()
+        package_archives(version, commit, app, dependencies, stage, prepared)
+        require(not output.exists(), f'Output already exists: {output}')
+        prepared.rename(output)
+    print(f'Prepared {output} from {commit}; no release has been published.')
+
+
+def package_archives(
+    version: str, commit: str, app: Path, dependencies: list[tuple[str, Path, str]], stage: Path, output: Path
+) -> None:
+    """Create archives in disposable staging; the caller exposes completed output."""
     binary_stage = stage / f'Pasta-{version}-macOS-arm64'
     binary_stage.mkdir()
     subprocess.run(['ditto', str(app), str(binary_stage / 'Pasta.app')], check=True)
@@ -137,7 +149,6 @@ def prepare(version: str) -> None:
         'Automated checks do not establish these behaviors.\n\n'
         'The corresponding source archive includes the pinned KeyboardShortcuts dependency. '
         'Verify the ZIP and source archive with SHA256SUMS. Pasta is GPL-3.0-or-later; KeyboardShortcuts retains MIT licensing.\n')
-    print(f'Prepared {output} from {commit}; no release has been published.')
 
 
 if __name__ == '__main__':
@@ -145,6 +156,6 @@ if __name__ == '__main__':
         require(sys.version_info >= (3, 12), 'Release packaging requires Python 3.12 or later.')
         require(len(sys.argv) == 2, 'Usage: python3 scripts/prepare-release.py X.Y.Z')
         prepare(sys.argv[1])
-    except (RuntimeError, subprocess.CalledProcessError) as error:
+    except (RuntimeError, subprocess.CalledProcessError, OSError) as error:
         print(f'Release preparation failed: {error}', file=sys.stderr)
         sys.exit(1)

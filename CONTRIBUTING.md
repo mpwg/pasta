@@ -13,6 +13,8 @@ Use a focused branch and pull request. Explain the change, user impact, and curr
 
 Use Xcode 27 or later on macOS 27 or later. Open the shared Pasta scheme and run all tests with ⌘U. Run `python3 scripts/check-project.py` for licensing, resource consistency, localization, and file-format checks. CI builds all test targets and runs the core tests. Native UI tests and real keyboard automation require a local interactive Mac session.
 
+Run `python3 -m unittest discover -s scripts/tests -v` on macOS for isolated checker and packaging regression tests. They use temporary Git repositories and tiny app fixtures, intercept native build/signature checks, and exercise the actual archive/checksum path. They do not build or publish a release and do not establish native signing correctness. Command-event tests intercept posting and send no session input.
+
 Test English, German, and an unsupported language falling back to English when changing visible text. Add localized messages to the correct app or core package catalog. Do not send real keyboard events from unit tests or capture clipboard contents in reports.
 
 ## Licensing and resources

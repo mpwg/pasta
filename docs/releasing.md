@@ -27,6 +27,8 @@ python3 scripts/prepare-release.py 0.1.0
 
 Artifacts go to ignored `dist/0.1.0/`. The script refuses dirty tracked files, untracked non-ignored files, invalid/mismatched versions and an existing output directory. It builds from the current commit and verifies bundle identity, minimum OS, architecture, ad hoc signing and bundled license files. It does not run tests; run the checks documented in CONTRIBUTING.md before packaging locally. The GitHub workflow gates packaging on its CI job.
 
+Packaging uses disposable staging inside `dist/`. The version directory appears only after all archives, checksums and notes are complete; a packaging failure removes staging and permits a retry. An existing version directory is preserved and rejected. Old `.build/package-<version>` directories from earlier script versions are no longer used.
+
 The source archive contains the complete tracked project at the recorded commit and the resolved dependency's tracked source. `BUILDING-SOURCE.md` explains how to use the included dependency without fetching it. App ZIP and source archive use the same recorded commit. `SHA256SUMS` covers both archives. The app ZIP includes license notices and build information outside the app, as well as notices inside the signed bundle.
 
 ## Compatibility
