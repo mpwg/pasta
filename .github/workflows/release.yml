@@ -36,7 +36,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@v7
         with:
-          python-version: '3.13'
+          python-version: '3.15'
       - name: Build and verify release artifacts
         env:
           RELEASE_VERSION: ${{ inputs.version }}
